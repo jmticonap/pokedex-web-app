@@ -1,0 +1,27 @@
+.login {
+    display: flex;
+    flex-flow: column nowrap;
+    gap: 2rem;
+    align-items: center;
+    justify-content: center;
+
+    width: 100vw;
+    height: 100vh;
+}
+
+.login__title {
+    font-family: var(--font-inter);
+    font-weight: 700;
+    font-size: 50px;
+    color: #FE1936;
+
+
+}
+.login__subtitle {
+    font-family: var(--font-inter);
+    font-weight: 500;
+    font-size: 30px;
+    color: #302F2F;
+
+
+}
