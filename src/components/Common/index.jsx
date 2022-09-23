@@ -26,6 +26,7 @@ export const JInputTextButton = ({ onSubmit }) => {
         onChange={ evt=>setValue(evt.target.value) }
         onKeyDown={fireSubmit} />
       <Button 
+        color='rojo'
         sx={{ borderRadius: 0, height: 68, width: 209, fontSize: '1.5rem' }} 
         variant="contained"
         onClick={onLocalSubmit}>Bigin</Button>

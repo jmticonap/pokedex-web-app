@@ -24,15 +24,7 @@ const Login = () => {
                 <circle cx="58.5" cy="58.5" r="52.5" fill="#fff" stroke="#000" strokeWidth="12" />
                 <circle cx="58.5" cy="58.5" r="25.5" fill="#212121" stroke="#000" strokeWidth="12" />
             </svg>
-            <div className='footer__strips'>
-
-            </div>
-            {/* <svg className='footer__strips' width="1440" height="123.181" viewBox="0 0 1440 154" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <rect width="1440" height="123.181" fill="#DD1A1A" />
-                <rect y="92" width="1440" height="69" fill="#0C0C0C" />
-            </svg> */}
-
-
+            <div className='footer__strips'></div>
         </div>
 
     );
