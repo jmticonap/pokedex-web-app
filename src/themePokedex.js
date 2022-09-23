@@ -5,7 +5,7 @@ const themePokedex = createTheme({
         rojo: {
             light: '#D55E5E',
             main: '#D93F3F',
-            dark: '#C42424',
+            dark: '#C62828',
             contrastText: '#ffffff'
         }
     },
