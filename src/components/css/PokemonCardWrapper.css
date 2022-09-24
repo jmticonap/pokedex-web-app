@@ -1,0 +1,8 @@
+.cards-wrapper{
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(15.5rem,16rem));
+    justify-content: center;
+    align-content: center;
+    gap: 1rem;
+    width: 100%;
+}

@@ -1,0 +1,280 @@
+.card-container__border {
+    width: 16rem;
+    height: 24rem;
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+}
+.card-container__border:hover{
+    box-shadow: 0 5px 10px 5px gray;
+    transform: scale(1.05,1.05);
+}
+.card-container__border>a{
+    text-decoration: none;
+    color: inherit;
+    
+}
+
+.subtitle_color{
+    color: #9F9F9F;
+}
+
+.card-container {
+    height: 100%;
+    display: flex;
+    flex-flow: column nowrap;
+    gap: 0;
+}
+
+.card__header {
+    height: 7.8rem;
+    position: relative;
+    display: flex;
+    justify-content: center;
+}
+
+.card__header-inner {
+    height: 10rem;
+    padding-top: 1.75rem;
+}
+
+.card__header img {
+    object-fit: cover;
+    width: auto;
+    height: 100%;
+}
+
+.card__body {
+    background-color: #FFF;
+    text-align: center;
+    height: 100%;
+    display: flex;
+    flex-flow: column nowrap;
+    gap: 0;
+    padding-top: 3rem;
+}
+
+.card__body__grid {
+    padding-top: 1rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    justify-content: space-evenly;
+    row-gap: 1rem;
+}
+
+
+
+
+
+.card-container ul {
+    list-style: none;
+}
+
+
+
+
+.plant_color{
+    color: #064140;
+}
+
+.plant_background__header {
+    background: linear-gradient(178.92deg, #7EC6C5 0.92%, #ABDAC6 47.96%, #CAE099 99.08%);
+    border-radius: 4px 4px 0px 0px;
+}
+
+.plant_background {
+    background: rgb(177, 219, 188);
+    background: linear-gradient(0deg, rgba(195, 222, 163, 1) 0%, rgba(177, 219, 188, 1) 100%);
+}
+
+
+.fire_color{
+    color: #8d2600;
+}
+.fire_background__header {
+    background: linear-gradient(176.37deg, #F96D6F -32.26%, #E35825 22.55%, #E8AE1B 125.72%);
+    border-radius: 4px 4px 0px 0px;
+}
+
+.fire_background {
+    background: rgb(230, 144, 30);
+    background: linear-gradient(0deg, rgba(231, 92, 53, 1) 0%, rgba(230, 144, 30, 1) 100%);
+}
+
+.watter_color{
+    color: #002757;
+}
+.watter_background__header {
+    background: linear-gradient(179.57deg, #133258 -70.14%, #1479FB 56.16%, #82B2F1 214.85%);
+    border-radius: 4px 4px 0px 0px;
+}
+
+.watter_background {
+    background: rgb(131, 185, 255);
+    background: linear-gradient(0deg, rgba(20, 121, 251, 1) 0%, rgba(131, 185, 255, 1) 100%);
+}
+
+.bug_color{
+    color: #026b00;
+}
+.bug_background__header {
+    background: linear-gradient(177.56deg, #62DB60 -58.92%, #3BB039 16.57%, #AAFFA8 209.53%);
+    border-radius: 4px 4px 0px 0px;
+}
+
+.bug_background {
+    background: rgb(74, 182, 72);
+    background: linear-gradient(0deg, rgba(195, 222, 163, 1) 0%, rgba(74, 182, 72, 1) 100%);
+}
+
+.flyer_color{
+    color: #4d3036;
+}
+.flyer_background__header {
+    background: linear-gradient(181.51deg, #735259 -6.44%, #BC6B7C 121.95%, #7C3F4C 186.11%);
+    border-radius: 4px 4px 0px 0px;
+}
+
+.flyer_background {
+    background: rgb(115, 82, 89);
+    background: linear-gradient(0deg, rgba(186, 112, 127, 1) 0%, rgba(115, 82, 89, 1) 100%);
+}
+
+.fighter_color{
+    color: #5f1e0e;
+}
+.fighter_background__header {
+    background: linear-gradient(176.83deg, #96402A -8.78%, #F1613C 169.09%, #CB735D 242.33%);
+    border-radius: 4px 4px 0px 0px;
+}
+
+.fighter_background {
+    background: rgb(150, 64, 42);
+    background: linear-gradient(0deg, rgba(233, 91, 54, 1) 0%, rgba(150, 64, 42, 1) 100%);
+}
+
+.poisons_color{
+    color: #2f104e;
+}
+.poisons_background__header {
+    background: linear-gradient(177.03deg, #5B3184 -11.97%, #A564E3 71.28%, #CE9BFF 135.64%);
+    border-radius: 4px 4px 0px 0px;
+}
+
+.poisons_background {
+    background: rgb(91, 49, 132);
+    background: linear-gradient(0deg, rgba(196, 142, 249, 1) 0%, rgba(91, 49, 132, 1) 100%);
+}
+
+.ghost_color{
+    color: #16183a;
+}
+.ghost_background__header {
+    background: linear-gradient(177.03deg, #323569 -11.97%, #454AA8 57.49%, #787DDA 135.64%);
+    border-radius: 4px 4px 0px 0px;
+}
+
+.ghost_background {
+    background: rgb(50, 53, 105);
+    background: linear-gradient(0deg, rgba(90, 97, 221, 1) 0%, rgba(50, 53, 105, 1) 100%);
+}
+
+.rock_color{
+    color: #353535;
+}
+.rock_background__header {
+    background: linear-gradient(177.03deg, #7E7E7E -11.97%, #8D8D94 57.49%, #D3D3D3 135.64%);
+    border-radius: 4px 4px 0px 0px;
+}
+
+.rock_background {
+    background: rgb(126, 126, 126);
+    background: linear-gradient(0deg, rgba(185, 185, 186, 1) 0%, rgba(126, 126, 126, 1) 100%);
+}
+
+.dark_color{
+    color: #030706;
+}
+.dark_background__header {
+    background: linear-gradient(177.03deg, #030706 -11.97%, #0D1211 57.49%, #5A5E5D 135.64%);
+    border-radius: 4px 4px 0px 0px;
+}
+
+.dark_background {
+    background: rgb(11, 14, 13);
+    background: linear-gradient(0deg, rgba(79, 79, 79, 1) 0%, rgba(11, 14, 13, 1) 100%);
+}
+
+.ice_color{
+    color: #1576a0;
+}
+.ice_background__header {
+    background: linear-gradient(177.03deg, #6FBEDF -11.97%, #64CBF5 47.77%, #BDEBFE 136.72%);
+    border-radius: 4px 4px 0px 0px;
+}
+
+.ice_background {
+    background: rgb(111, 190, 223);
+    background: linear-gradient(0deg, rgba(196, 235, 251, 1) 0%, rgba(111, 190, 223, 1) 100%);
+}
+
+.steel_color{
+    color:#233d35;
+}
+.steel_background__header {
+    background: linear-gradient(179.75deg, #5E736C -19.96%, #728881 43.67%, #A8A8A8 138.4%);
+    border-radius: 4px 4px 0px 0px;
+}
+
+.steel_background {
+    background: rgb(94, 115, 108);
+    background: linear-gradient(0deg, rgba(155, 183, 173, 1) 0%, rgba(94, 115, 108, 1) 100%);
+}
+.dragon_color{
+    color:#1e656e;
+}
+.dragon_background__header {
+    background: linear-gradient(179.75deg, #478A93 -19.96%, #56A4AE 43.67%, #A2BEC1 138.4%);
+    border-radius: 4px 4px 0px 0px;
+}
+
+.dragon_background {
+    background: rgb(71, 138, 147);
+    background: linear-gradient(0deg, rgba(141, 214, 224, 1) 0%, rgba(71, 138, 147, 1) 100%);
+}
+.magic_color{
+    color:#971B45;
+}
+.magic_background__header {
+    background: linear-gradient(179.75deg, #971B45 -19.96%, #C23867 43.67%, #CD7D98 138.4%);
+    border-radius: 4px 4px 0px 0px;
+}
+
+.magic_background {
+    background: rgb(151, 27, 69);
+    background: linear-gradient(0deg, rgba(197, 89, 126, 1) 0%, rgba(151, 27, 69, 1) 100%);
+}
+
+.electric_color{
+    color: #0C1395;
+}
+.electric_background__header {
+    background: linear-gradient(179.75deg, #0C1395 -19.96%, #2B319B 43.67%, #7075D9 138.4%);
+    border-radius: 4px 4px 0px 0px;
+}
+
+.electric_background {
+    background: rgb(12, 19, 149);
+    background: linear-gradient(0deg, rgba(142, 148, 254, 1) 0%, rgba(12, 19, 149, 1) 100%);
+}
+.terrestrial_color{
+    color: #654008;
+}
+.terrestrial_background__header {
+    background: linear-gradient(179.75deg, #654008 -19.96%, #895C1A 43.67%, #D69638 138.4%);
+    border-radius: 4px 4px 0px 0px;
+}
+
+.terrestrial_background {
+    background: rgb(101, 64, 8);
+    background: linear-gradient(0deg, rgba(156, 102, 20, 1) 0%, rgba(101, 64, 8, 1) 100%);
+}
