@@ -47,29 +47,27 @@ export const Searcher = () => {
       });
   };
 
+  const submit = (e) => {
+    e.preventDefault();
+    searchPokemon(pokemonSearch);
+  };
+
   return (
     <section className="searcher-section">
       <h2>
         <span>Bienvenido Name</span> Aquí podrás encontrar tus pokémons
         favoritos!
       </h2>
-      <div>
+      <form onSubmit={(e) => submit(e)}>
         <input
           type="text"
+          required
           placeholder="Busca un pokémon"
           onChange={(e) => setPokemonSearch(e.target.value)}
           value={pokemonSearch}
         />
-        <button
-          type="button"
-          disabled={isSearching}
-          onClick={() => {
-            searchPokemon(pokemonSearch);
-          }}
-        >
-          Buscar
-        </button>
-      </div>
+        <button disabled={isSearching}>Buscar</button>
+      </form>
     </section>
   );
 };
