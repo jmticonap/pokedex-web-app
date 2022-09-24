@@ -18,17 +18,10 @@ export const loadDataThunk = createAsyncThunk(
 const pokeList = createSlice({
     name: 'poke_list',
     initialState: {
-        stateLoad: STATE_LOAD.DEAD,
+        stateLoad: STATE_LOAD.IDLE,
         data: {}
     },
     reducers: {
-        setData: (state, action) => {
-            return { ...state, ...action.payload }
-        },
-        //Set the load slice state
-        setLoad: (state, action) => {
-            return { ...state, stateLoad: action.payload }
-        }
     },
     extraReducers(builder){
         builder
@@ -40,24 +33,19 @@ const pokeList = createSlice({
             )
             .addCase(
                 loadDataThunk.fulfilled,
-                (state,action) => {
-                    
+                (state,action) => {                    
                     state.stateLoad = STATE_LOAD.SUCCEEDED
                     state.data = {...state.data, ...action.payload}
-                }
-            )
-            .addCase(
-                loadDataThunk.rejected,
-                (state,action) => {
-                    state.stateLoad = STATE_LOAD.FAILED
+                    //
+                    return state
                 }
             )
     }
 })
 
-export const results = state => state.data?.results||[]
-export const status = state => state.stateLoad
+export const data = state => state.pokeList.data
+export const status = state => state.pokeList.stateLoad
 
-export const { setLoad, setData } = pokeList.actions
+export const { } = pokeList.actions
 
 export default pokeList.reducer
