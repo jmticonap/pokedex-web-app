@@ -4,6 +4,7 @@ import './App.css'
 import { HashRouter, Routes, Route } from 'react-router-dom'
 import Login from './components/Login'
 import {Pokedex} from './components/Pokedex'
+import { PokemonProfile } from './components/PokemonProfile'
 
 function App() {
   const [count, setCount] = useState(0)
@@ -14,6 +15,7 @@ function App() {
       <Routes>
         <Route path='/' element={<Login />} />
         <Route path='/pokedex' element={<Pokedex />} />
+        <Route path='/pokemon/:name' element={<PokemonProfile />} />
       </Routes>
     </div>
     </HashRouter >

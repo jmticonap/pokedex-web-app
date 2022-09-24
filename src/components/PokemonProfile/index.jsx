@@ -1,10 +1,9 @@
-import React from 'react';
+import React from "react";
 
 export const PokemonProfile = () => {
-    return (
-        <div>
-            
-        </div>
-    );
+  return (
+    <div>
+      <h1>holis desde el perfil</h1>
+    </div>
+  );
 };
-
