@@ -10,6 +10,8 @@ const userName = createSlice({
     }
 })
 
+export const name = state => state.userName
+
 export const {changeName} = userName.actions
 
 export default userName.reducer

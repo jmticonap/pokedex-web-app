@@ -1,13 +1,20 @@
 
-import React from 'react';
+import React, {useEffect} from 'react';
 import imgLogo from '../assets/img/pokedex.png'
 import { JInputTextButton } from './Common'
 import './css/login.css'
+import { changeName } from '../store/slices/userName.slice';
+import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
+    const dispatch = useDispatch()
+    const navigate = useNavigate()
     const onSubmit = (value) => {
-        console.log(value)
+        dispatch( changeName(value) )
+        navigate('/pokedex')
     }
+
     return (
 
         <div className='login'>
