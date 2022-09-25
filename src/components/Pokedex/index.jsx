@@ -5,7 +5,6 @@ import "../css/PokemonCard.css";
 import "../css/pokedexHeader.css";
 import "../css/searchPokemon.css";
 
-
 import axios from "axios";
 import Skeleton from "@mui/material/Skeleton";
 
@@ -14,53 +13,88 @@ import useAPIPokemonList from "../../hooks/useAPIPokemonList";
 import Header from "../Header";
 import { cardBackgoundStyle, capitalize } from "../../utils";
 import { useNavigate } from "react-router-dom";
+import { Autocomplete, TextField } from "@mui/material";
 
 export const Searcher = () => {
   const navigate = useNavigate();
   const [isSearching, setIsSearching] = useState(false);
   const [pokemonSearch, setPokemonSearch] = useState("");
 
+  const [names, setNames] = useState([]);
+
+  useEffect(() => {
+    if (localStorage.getItem("arrayPokes")) {
+      // cargamos los pokes desde el localStorage
+      const LOCALPOKES = localStorage.getItem("arrayPokes");
+      setNames(JSON.parse(LOCALPOKES));
+    } else {
+      // hacemos la petición a la api por primera vez
+      axios.get(`https://pokeapi.co/api/v2/pokemon?limit=1200`).then((res) => {
+        const f = res.data.results.map((item) => item.name);
+        localStorage.setItem("arrayPokes", JSON.stringify(f));
+        setNames([...f]);
+      });
+    }
+  }, []);
+
   const searchPokemon = (pokemon) => {
     setIsSearching(true);
-    axios
-      .get(`https://pokeapi.co/api/v2/pokemon/${pokemon}`)
-      .then((res) => {
-        setPokemonSearch(res.data);
-        if (pokemonSearch) {
-          navigate(`/pokemon/${pokemon}`);
-        }
-      })
-      .catch(() => {
-        setIsSearching(false);
-        alert("no se encontró el pokemon");
-      });
-  };
-
-  const submit = (e) => {
-    e.preventDefault();
-    searchPokemon(pokemonSearch);
+    if (!pokemon) {
+      alert("primero escriba o seleccione el nombre del pokemon");
+      setIsSearching(false);
+    } else
+      axios
+        .get(`https://pokeapi.co/api/v2/pokemon/${pokemon}`)
+        .then((res) => {
+          setPokemonSearch(res.data);
+          if (pokemonSearch) {
+            navigate(`/pokemon/${pokemon}`);
+          }
+        })
+        .catch(() => {
+          setIsSearching(false);
+          alert("no se encontró el pokemon");
+        });
   };
 
   return (
     <section className="searcher-section">
       <h2>
-        <span>Bienvenido {"Name"}</span> Aquí podrás encontrar tus pokémons
-        favoritos!
+        <span>Welcome {"Name"}</span> Here you can find your favorite pokemons!
       </h2>
+
       <div className="search-container">
-        <form onSubmit={(e) => submit(e)}>
-          <input
+        <div className="search-input-container ">
+          <Autocomplete
+            onChange={(e) => {
+              setPokemonSearch(e.target.innerText);
+            }}
+            disablePortal
+            id="combo-box-demo"
+            options={names}
+            sx={{ width: 300 }}
+            renderInput={(params) => <TextField {...params} label="name" />}
+          />
+          <button
+            onClick={() => {
+              searchPokemon(pokemonSearch);
+            }}
+            className="shadow btn"
+            disabled={isSearching}
+          >
+            Search
+          </button>
+        </div>
+
+        {/* <input
             className="shadow"
             type="text"
             required
             placeholder="Busca un pokémon"
             onChange={(e) => setPokemonSearch(e.target.value)}
             value={pokemonSearch}
-          />
-          <button className="shadow" disabled={isSearching}>
-            Buscar
-          </button>
-        </form>
+          /> */}
+
         <select className="select-type-search shadow">
           <option className="option-type-search" default value="0">
             Seleciona un tipo de pokemon
