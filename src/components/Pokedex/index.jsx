@@ -2,22 +2,20 @@ import React, { useEffect, useState } from 'react'
 
 import '../css/PokemonCardWrapper.css'
 import '../css/PokemonCard.css'
+import '../css/Pokedex.css'
 
 import axios from 'axios'
 import Skeleton from '@mui/material/Skeleton';
+import { Pagination, PaginationItem } from '@mui/material';
 
 import { STATE_LOAD } from '../../store/slices/pokeList.slice'
 import useAPIPokemonList from '../../hooks/useAPIPokemonList'
-
-
 import { cardBackgoundStyle, capitalize } from '../../utils'
-
-
 
 
 export const PokemonCardWrapper = (props) => {
     return (
-        <div className='cards-wrapper'>
+        <div className={`cards-wrapper ${props.className||''}`}>
             {props.children}
         </div>
     );
@@ -50,7 +48,7 @@ export const PokemonCard = ({ url }) => {
 
     return (
         <section className={`card-container__border ${getStyleByKey('background')}`}>
-            <a href=''>
+            <a href={`#/pokedex/${data?.id}`}>
                 <div className='card-container'>
                     <div className={`card__header ${getStyleByKey('head')}`}>
                         <div className='card__header-inner'>
@@ -105,6 +103,9 @@ export const PokemonCard = ({ url }) => {
 
 export const Pokedex = () => {
     const { pokeData, loadStatus } = useAPIPokemonList()
+    const [pageLength, setPageLength] = useState(20)
+    const [dataLength, setDataLength] = useState(0)
+    const paginatorBtnStyle = {width:'5rem', height:'5rem', fontSize:'1.5rem'}
 
     const renderPokemons = () => {
         if (loadStatus === STATE_LOAD.SUCCEEDED)
@@ -113,12 +114,23 @@ export const Pokedex = () => {
             ))
     }
 
+    const changePageHandler = (evt, value) => {
+        console.log( value );
+    }
+
     return (
-        <div>
+        <div className='pokedex-container'>
             <h1>Pokedex</h1>
             <PokemonCardWrapper>
                 {renderPokemons()}
             </PokemonCardWrapper>
+            <Pagination  
+                renderItem={item => (<PaginationItem sx={paginatorBtnStyle} {...item} />) }
+                onChange={changePageHandler}
+                defaultPage={1}
+                color='rojo'
+                count={dataLength/pageLength} 
+                shape="rounded" />
         </div>
     );
 };

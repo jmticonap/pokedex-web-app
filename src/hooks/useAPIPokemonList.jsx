@@ -8,7 +8,9 @@ const useAPIPokemonList = () => {
     const pokeData = useSelector(data)
 
     useEffect(()=>{
-        store.dispatch(loadDataThunk())
+        //Looking for previus data loaded
+        if(!pokeData.hasOwnProperty('results'))
+            store.dispatch(loadDataThunk())
     },[])
 
     return { pokeData, loadStatus }
