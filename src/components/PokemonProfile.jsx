@@ -1,10 +1,10 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import "../css/PokemonProfile.css";
-import { cardBackgoundStyle, capitalize } from "../../utils";
-import "../css/PokemonCard.css";
-import Header from "../Header/Header";
+import "./css/PokemonProfile.css";
+import { cardBackgoundStyle, capitalize } from "../utils";
+import "./css/PokemonCard.css";
+import Header from "./Header";
 
 export const PokemonProfile = () => {
   const name = useParams("name").name;

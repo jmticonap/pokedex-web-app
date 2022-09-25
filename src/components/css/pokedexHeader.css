@@ -30,14 +30,14 @@
 } */
 
 .header-pokedex::before {
-    content: "";
-    background: #0c0c0c;
-    position: absolute;
-    width: 1440px;
-    height: 49.7px;
-    width: 100%;
-    left: 0;
-    right: auto;
-    top: 111.3px;
-    z-index: -2;
+  content: "";
+  background: #0c0c0c;
+  position: absolute;
+  width: 1440px;
+  height: 49.7px;
+  width: 100%;
+  left: 0;
+  right: auto;
+  top: 111.3px;
+  z-index: -2;
 }

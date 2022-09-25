@@ -4,11 +4,9 @@ import "./App.css";
 import { HashRouter, Routes, Route } from "react-router-dom";
 import Login from "./components/Login";
 import { Pokedex } from "./components/Pokedex";
-import { PokemonProfile } from "./components/PokemonProfile/PokemonProfile";
+import PokemonProfile from "./components/PokemonProfile";
 
 function App() {
-  const [count, setCount] = useState(0);
-
   return (
     <HashRouter>
       <div className="App">

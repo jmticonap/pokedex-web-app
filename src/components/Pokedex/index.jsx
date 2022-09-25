@@ -11,7 +11,7 @@ import Skeleton from "@mui/material/Skeleton";
 
 import { STATE_LOAD } from "../../store/slices/pokeList.slice";
 import useAPIPokemonList from "../../hooks/useAPIPokemonList";
-import Header from "../Header/Header";
+import Header from "../Header";
 import { cardBackgoundStyle, capitalize } from "../../utils";
 import { useNavigate } from "react-router-dom";
 

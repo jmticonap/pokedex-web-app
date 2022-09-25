@@ -1,5 +1,6 @@
 import React from "react";
-import pokedexImg from "../../assets/img/pokedex.png";
+import pokedexImg from "../assets/img/pokedex.png";
+
 const Header = () => {
   return (
     <header className="header-pokedex">
