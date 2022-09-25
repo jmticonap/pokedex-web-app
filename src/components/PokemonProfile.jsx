@@ -1,12 +1,12 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import "./css/PokemonProfile.css";
+import "./css/pokemonProfile.css";
 import { cardBackgoundStyle, capitalize } from "../utils";
-import "./css/PokemonCard.css";
+
 import Header from "./Header";
 
-export const PokemonProfile = () => {
+const PokemonProfile = () => {
   const name = useParams("name").name;
   const [pokemon, setPokemon] = useState({});
   const navigate = useNavigate();
@@ -61,3 +61,5 @@ export const PokemonProfile = () => {
     </div>
   );
 };
+
+export default PokemonProfile
