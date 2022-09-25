@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import "./css/pokemonProfile.css";
 import { cardBackgoundStyle, capitalize } from "../utils";
-import Back from "./Back";
+
 import Header from "./Header";
 
 const PokemonProfile = () => {
@@ -50,7 +50,7 @@ const PokemonProfile = () => {
       ) : (
         <div>
           <Header />
-          <Back />
+
           <div className="card-profile-primary">
             <div className={`background-poke ${getStyleByKey("background")}`}>
               <img
