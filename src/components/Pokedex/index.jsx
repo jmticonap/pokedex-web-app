@@ -4,27 +4,16 @@ import "../css/PokemonCardWrapper.css";
 import "../css/PokemonCard.css";
 import "../css/pokedexHeader.css";
 import "../css/searchPokemon.css";
-import pokedexImg from "../../assets/img/pokedex.png";
+
 
 import axios from "axios";
 import Skeleton from "@mui/material/Skeleton";
 
 import { STATE_LOAD } from "../../store/slices/pokeList.slice";
 import useAPIPokemonList from "../../hooks/useAPIPokemonList";
-
+import Header from "../Header/Header";
 import { cardBackgoundStyle, capitalize } from "../../utils";
 import { useNavigate } from "react-router-dom";
-// import { set } from "immer/dist/internal";
-
-export const Header = () => {
-  return (
-    <header className="header-pokedex">
-      <div className="pokedex-header-back">
-        <img src={pokedexImg} className="img-pokedex-header" alt="" />
-      </div>
-    </header>
-  );
-};
 
 export const Searcher = () => {
   const navigate = useNavigate();
@@ -55,19 +44,30 @@ export const Searcher = () => {
   return (
     <section className="searcher-section">
       <h2>
-        <span>Bienvenido Name</span> Aquí podrás encontrar tus pokémons
+        <span>Bienvenido {"Name"}</span> Aquí podrás encontrar tus pokémons
         favoritos!
       </h2>
-      <form onSubmit={(e) => submit(e)}>
-        <input
-          type="text"
-          required
-          placeholder="Busca un pokémon"
-          onChange={(e) => setPokemonSearch(e.target.value)}
-          value={pokemonSearch}
-        />
-        <button disabled={isSearching}>Buscar</button>
-      </form>
+      <div className="search-container">
+        <form onSubmit={(e) => submit(e)}>
+          <input
+            className="shadow"
+            type="text"
+            required
+            placeholder="Busca un pokémon"
+            onChange={(e) => setPokemonSearch(e.target.value)}
+            value={pokemonSearch}
+          />
+          <button className="shadow" disabled={isSearching}>
+            Buscar
+          </button>
+        </form>
+        <select className="select-type-search shadow">
+          <option className="option-type-search" default value="0">
+            Seleciona un tipo de pokemon
+          </option>
+          {}
+        </select>
+      </div>
     </section>
   );
 };
@@ -79,7 +79,7 @@ export const PokemonCardWrapper = (props) => {
 export const PokemonCard = ({ url }) => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [data, setData] = useState(null);
-
+  const navigate = useNavigate();
   //key = [background, head, color]
   const getStyleByKey = (key) => {
     if (data) {
@@ -104,7 +104,13 @@ export const PokemonCard = ({ url }) => {
       className={`card-container__border ${getStyleByKey("background")}`}
     >
       <a href="">
-        <div className="card-container">
+        <div
+          onClick={(e) => {
+            e.preventDefault();
+            navigate(`/pokemon/${data.name}`);
+          }}
+          className="card-container"
+        >
           <div className={`card__header ${getStyleByKey("head")}`}>
             <div className="card__header-inner">
               {isLoaded ? (
