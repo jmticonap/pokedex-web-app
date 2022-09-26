@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import {localDb} from '../../utils'
 
 import '../css/PokemonCardWrapper.css'
 import '../css/PokemonCard.css'
@@ -78,8 +79,8 @@ export const PokemonCard = ({ data }) => {
 
 
 export const Pokedex = () => {
-    const { dataList, setUrlList } = useAPIPokemonCharacter()
-    const { pokeData, loadStatus } = useAPIPokemonList()
+    const { dataList, setUrlList, setPageIndex:piChar } = useAPIPokemonCharacter()
+    const { pokeData, loadStatus, setPageIndex:piList } = useAPIPokemonList()
     const [pageLength, setPageLength] = useState(20)
     const [dataLength, setDataLength] = useState(0)
     const paginatorBtnStyle = { width: '5rem', height: '5rem', fontSize: '1.5rem' }
@@ -94,7 +95,10 @@ export const Pokedex = () => {
     }
 
     const changePageHandler = (evt, value) => {
-        console.log(value);
+        localDb.delete()
+        piList(value)
+        piChar(value)
+        //setPageIndex(value)
     }
 
     useEffect(() => {

@@ -9,8 +9,9 @@ export const STATE_LOAD = { //idle' | 'loading' | 'succeeded' | 'failed'
 }
 export const loadDataThunk = createAsyncThunk(
     'pokelist/loadDataStatus',
-    async () => {
-        const response = await axios.get('https://pokeapi.co/api/v2/pokemon')
+    async (value) => {
+        const response = await axios.get(`https://pokeapi.co/api/v2/pokemon?offset=${(value-1)*20}&limit=20`)
+        console.log("pokeList:loadDataThunk");
         return response.data
     }
 )

@@ -115,15 +115,15 @@ export const getStat = (data, stat_name) => (
         .find(itm => itm.stat.name === stat_name)['base_stat']
 )
 
-class DataSchema {
+export class DataSchema {
     constructor(
-        id, 
-        name, 
-        types, 
-        hp, 
-        attack, 
-        defense, 
-        speed, 
+        id,
+        name,
+        types,
+        hp,
+        attack,
+        defense,
+        speed,
         image) {
         this.id = id
         this.name = name
@@ -135,42 +135,58 @@ class DataSchema {
         this.image = image
     }
 }
+class PageSchema {
+    constructor(pageIndex, data) {
+        this.pageIndex = pageIndex
+        this.data = data
+    }
+}
 
 export const localDb = {
     name: 'pokemon_page_data',
-    data: [],
+    page: {
+        pageIndex: 0,
+        data: []
+    },
+    delete: () => {
+        window.localStorage.removeItem(localDb.name)
+        return localDb
+    },
     loadData: () => {
         const str_db = window.localStorage.getItem(localDb.name)
         if (str_db) {
             const _data = JSON.parse(str_db)
-
-            localDb.data = _data
-            .map(i => new DataSchema(
-                i.id,
-                i.name,
-                i.types,
-                i.hp,
-                i.attack,
-                i.defense,
-                i.speed,
-                i.image
-            ))
+            
+            localDb.page.pageIndex = _data.pageIndex
+            localDb.page.data = _data.data
+                .map(i => new DataSchema(
+                    i.id,
+                    i.name,
+                    i.types,
+                    i.hp,
+                    i.attack,
+                    i.defense,
+                    i.speed,
+                    i.image
+                ))
         }
         else
-            window.localStorage.setItem(localDb.name, JSON.stringify([]))
+            window.localStorage.setItem(localDb.name, JSON.stringify(localDb.page))
 
         return localDb
     },
-    append: item => {
+    append: (pageIndex, item) => {
         localDb.loadData()
+        localDb.page.pageIndex = pageIndex
         if (item.__proto__ === ([]).__proto__)
-            localDb.data.push(...item)
+            localDb.page.data.push(...item)
         else
-            localDb.data.push(item)
+            localDb.page.data.push(item)
+        
 
         window
             .localStorage
-            .setItem(localDb.name, JSON.stringify(localDb.data))
+            .setItem(localDb.name, JSON.stringify(localDb.page))
 
         return localDb
     }
