@@ -106,6 +106,72 @@ export const cardBackgoundStyle = {
 }
 
 export const capitalize = (str) => {
-    if(str)
-        return str[0].toUpperCase() + str.slice(1,str.length)
+    if (str)
+        return str[0].toUpperCase() + str.slice(1, str.length)
+}
+
+export const getStat = (data, stat_name) => (
+    data?.stats
+        .find(itm => itm.stat.name === stat_name)['base_stat']
+)
+
+class DataSchema {
+    constructor(
+        id, 
+        name, 
+        types, 
+        hp, 
+        attack, 
+        defense, 
+        speed, 
+        image) {
+        this.id = id
+        this.name = name
+        this.types = types
+        this.hp = hp
+        this.attack = attack
+        this.defense = defense
+        this.speed = speed
+        this.image = image
+    }
+}
+
+export const localDb = {
+    name: 'pokemon_page_data',
+    data: [],
+    loadData: () => {
+        const str_db = window.localStorage.getItem(localDb.name)
+        if (str_db) {
+            const _data = JSON.parse(str_db)
+
+            localDb.data = _data
+            .map(i => new DataSchema(
+                i.id,
+                i.name,
+                i.types,
+                i.hp,
+                i.attack,
+                i.defense,
+                i.speed,
+                i.image
+            ))
+        }
+        else
+            window.localStorage.setItem(localDb.name, JSON.stringify([]))
+
+        return localDb
+    },
+    append: item => {
+        localDb.loadData()
+        if (item.__proto__ === ([]).__proto__)
+            localDb.data.push(...item)
+        else
+            localDb.data.push(item)
+
+        window
+            .localStorage
+            .setItem(localDb.name, JSON.stringify(localDb.data))
+
+        return localDb
+    }
 }

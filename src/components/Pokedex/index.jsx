@@ -4,92 +4,68 @@ import '../css/PokemonCardWrapper.css'
 import '../css/PokemonCard.css'
 import '../css/Pokedex.css'
 
-import axios from 'axios'
-import Skeleton from '@mui/material/Skeleton';
 import { Pagination, PaginationItem } from '@mui/material';
 
-import { STATE_LOAD } from '../../store/slices/pokeList.slice'
+import pokeListSlice,{ STATE_LOAD } from '../../store/slices/pokeList.slice'
 import useAPIPokemonList from '../../hooks/useAPIPokemonList'
 import { cardBackgoundStyle, capitalize } from '../../utils'
+
+import useAPIPokemonCharacter from '../../hooks/useAPIPokemonCharacter'
 
 
 export const PokemonCardWrapper = (props) => {
     return (
-        <div className={`cards-wrapper ${props.className||''}`}>
+        <div className={`cards-wrapper ${props.className || ''}`}>
             {props.children}
         </div>
     );
 };
 
-export const PokemonCard = ({ url }) => {
+export const PokemonCard = ({ data }) => {
     const [isLoaded, setIsLoaded] = useState(false)
-    const [data, setData] = useState(null)
 
     //key = [background, head, color]
     const getStyleByKey = (key) => {
         if (data) {
-            return cardBackgoundStyle[data?.types[0].type.name][key]
+            return cardBackgoundStyle[data.types[0]][key]
         } else {
             return cardBackgoundStyle['normal'][key]
         }
     }
-    //speed, defense, hp, attack
-    const getStat = (stat_name) => (
-        data?.stats
-            .find(itm => itm.stat.name === stat_name)['base_stat']
-    )
-
-    useEffect(() => {
-        axios
-            .get(url)
-            .then(res => setData(res.data))
-            .finally(() => setIsLoaded(true))
-    }, [])
 
     return (
         <section className={`card-container__border ${getStyleByKey('background')}`}>
-            <a href={`#/pokedex/${data?.id}`}>
+            <a href={`#/pokedex/${data.id}`}>
                 <div className='card-container'>
                     <div className={`card__header ${getStyleByKey('head')}`}>
                         <div className='card__header-inner'>
-                            {
-                                isLoaded ? (
-                                    <img src={data?.sprites.other['official-artwork']['front_default']} alt="imagen" />
-                                ) : (
-                                    <Skeleton
-                                        sx={{ backgroundColor: 'rgba(136,136,136,0.75)' }}
-                                        animation="pulse"
-                                        variant="circular"
-                                        width={120} height={120} />
-                                )
-                            }
-
+                            <img src={data.image} alt="imagen" />
                         </div>
                     </div>
                     <div className='card__body'>
                         <div>
-                            <h2 className={getStyleByKey('color')}>{capitalize(data?.name)}</h2>
+                            <h2 className={getStyleByKey('color')}>{capitalize(data.name)}</h2>
                             {/* Join type name with format [name / name / ...] */}
-                            <p>{data?.types.map(t => t.type.name).join(' / ')}</p>
+                            <p>{data.types.join(' / ')}</p>
                             <small className='subtitle_color'>type</small>
                         </div>
                         <div>
                             <div className='card__body__grid'>
                                 <div>
                                     <h6 className='subtitle_color'>HP</h6>
-                                    <h3 className={getStyleByKey('color')}>{getStat('hp')}</h3>
+                                    <h3 className={getStyleByKey('color')}>{data.hp}</h3>
                                 </div >
                                 <div>
                                     <h6 className='subtitle_color'>ATTACK</h6>
-                                    <h3 className={getStyleByKey('color')}>{getStat('attack')}</h3>
+                                    <h3 className={getStyleByKey('color')}>{data.attack}</h3>
                                 </div>
                                 <div>
                                     <h6 className='subtitle_color'>DEFENSE</h6>
-                                    <h3 className={getStyleByKey('color')}>{getStat('defense')}</h3>
+                                    <h3 className={getStyleByKey('color')}>{data.defense}</h3>
                                 </div>
                                 <div>
                                     <h6 className='subtitle_color'>SPEED</h6>
-                                    <h3 className={getStyleByKey('color')}>{getStat('speed')}</h3>
+                                    <h3 className={getStyleByKey('color')}>{data.speed}</h3>
                                 </div>
                             </div >
                         </div >
@@ -102,21 +78,33 @@ export const PokemonCard = ({ url }) => {
 
 
 export const Pokedex = () => {
+    const { dataList, setUrlList } = useAPIPokemonCharacter()
     const { pokeData, loadStatus } = useAPIPokemonList()
     const [pageLength, setPageLength] = useState(20)
     const [dataLength, setDataLength] = useState(0)
-    const paginatorBtnStyle = {width:'5rem', height:'5rem', fontSize:'1.5rem'}
+    const paginatorBtnStyle = { width: '5rem', height: '5rem', fontSize: '1.5rem' }
+
 
     const renderPokemons = () => {
-        if (loadStatus === STATE_LOAD.SUCCEEDED)
-            return pokeData?.results.map(pokemon => (
-                <PokemonCard url={pokemon.url} key={pokemon.name} />
+        if (loadStatus === STATE_LOAD.SUCCEEDED) {
+            return dataList.map(pokemon => (
+                <PokemonCard data={pokemon} key={pokemon.name} />
             ))
+        }
     }
 
     const changePageHandler = (evt, value) => {
-        console.log( value );
+        console.log(value);
     }
+
+    useEffect(() => {
+        if (pokeData.results) {
+            const urls = pokeData.results.map(pokemon => pokemon.url)
+            setUrlList([...urls])
+            setPageLength(20)
+            setDataLength(pokeData.count)
+        }
+    }, [pokeData])
 
     return (
         <div className='pokedex-container'>
@@ -124,12 +112,12 @@ export const Pokedex = () => {
             <PokemonCardWrapper>
                 {renderPokemons()}
             </PokemonCardWrapper>
-            <Pagination  
-                renderItem={item => (<PaginationItem sx={paginatorBtnStyle} {...item} />) }
+            <Pagination
+                renderItem={item => (<PaginationItem sx={paginatorBtnStyle} {...item} />)}
                 onChange={changePageHandler}
                 defaultPage={1}
                 color='rojo'
-                count={dataLength/pageLength} 
+                count={Math.ceil(dataLength / pageLength)}
                 shape="rounded" />
         </div>
     );

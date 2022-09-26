@@ -123,7 +123,7 @@
 
 .bug_background {
     background: rgb(74, 182, 72);
-    background: linear-gradient(0deg, rgba(195, 222, 163, 1) 0%, rgba(74, 182, 72, 1) 100%);
+    background: linear-gradient(0deg, rgba(74, 182, 72, 1) 0%, rgba(195, 222, 163, 1) 100%);
 }
 
 .flyer_color{
