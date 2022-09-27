@@ -1,17 +1,14 @@
 import React, { useEffect, useState } from 'react'
-import {localDb} from '../../utils'
-
+import {
+    localDb,
+    cardBackgoundStyle,
+    capitalize
+} from '../../utils'
 import '../css/PokemonCardWrapper.css'
 import '../css/PokemonCard.css'
 import '../css/Pokedex.css'
-
 import { Pagination, PaginationItem } from '@mui/material';
-
-import pokeListSlice,{ STATE_LOAD } from '../../store/slices/pokeList.slice'
-import useAPIPokemonList from '../../hooks/useAPIPokemonList'
-import { cardBackgoundStyle, capitalize } from '../../utils'
-
-import useAPIPokemonCharacter from '../../hooks/useAPIPokemonCharacter'
+import usePokeData from '../../hooks/usePokeData'
 
 
 export const PokemonCardWrapper = (props) => {
@@ -79,36 +76,33 @@ export const PokemonCard = ({ data }) => {
 
 
 export const Pokedex = () => {
-    const { dataList, setUrlList, setPageIndex:piChar } = useAPIPokemonCharacter()
-    const { pokeData, loadStatus, setPageIndex:piList } = useAPIPokemonList()
-    const [pageLength, setPageLength] = useState(20)
-    const [dataLength, setDataLength] = useState(0)
+    const {
+        listUrl,
+        listPokeData,
+        setPageNumber,
+        pageIndex,
+        dataLength,
+        pageLength
+    } = usePokeData()
     const paginatorBtnStyle = { width: '5rem', height: '5rem', fontSize: '1.5rem' }
 
-
     const renderPokemons = () => {
-        if (loadStatus === STATE_LOAD.SUCCEEDED) {
-            return dataList.map(pokemon => (
-                <PokemonCard data={pokemon} key={pokemon.name} />
-            ))
-        }
+        
+        return listPokeData.map(pokemon => (
+            <PokemonCard data={pokemon} key={pokemon.name} />
+        ))
     }
 
     const changePageHandler = (evt, value) => {
         localDb.delete()
-        piList(value)
-        piChar(value)
-        //setPageIndex(value)
+        setPageNumber(value)
     }
 
     useEffect(() => {
-        if (pokeData.results) {
-            const urls = pokeData.results.map(pokemon => pokemon.url)
-            setUrlList([...urls])
-            setPageLength(20)
-            setDataLength(pokeData.count)
+        if (localDb.loadData().page.data.length > 0) {
+
         }
-    }, [pokeData])
+    }, [])
 
     return (
         <div className='pokedex-container'>
@@ -120,8 +114,9 @@ export const Pokedex = () => {
                 renderItem={item => (<PaginationItem sx={paginatorBtnStyle} {...item} />)}
                 onChange={changePageHandler}
                 defaultPage={1}
+                page={pageIndex??1}
                 color='rojo'
-                count={Math.ceil(dataLength / pageLength)}
+                count={Math.ceil(dataLength/pageLength)}
                 shape="rounded" />
         </div>
     );

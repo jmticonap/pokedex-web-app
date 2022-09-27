@@ -149,7 +149,7 @@
 
 .fighter_background {
     background: rgb(150, 64, 42);
-    background: linear-gradient(0deg, rgba(233, 91, 54, 1) 0%, rgba(150, 64, 42, 1) 100%);
+    background: linear-gradient(0deg, rgba(150, 64, 42, 1) 0%, rgba(233, 91, 54, 1) 100%);
 }
 
 .poisons_color{
@@ -162,7 +162,7 @@
 
 .poisons_background {
     background: rgb(91, 49, 132);
-    background: linear-gradient(0deg, rgba(196, 142, 249, 1) 0%, rgba(91, 49, 132, 1) 100%);
+    background: linear-gradient(0deg, rgba(91, 49, 132, 1) 0%, rgba(196, 142, 249, 1) 100%);
 }
 
 .ghost_color{
@@ -175,7 +175,7 @@
 
 .ghost_background {
     background: rgb(50, 53, 105);
-    background: linear-gradient(0deg, rgba(90, 97, 221, 1) 0%, rgba(50, 53, 105, 1) 100%);
+    background: linear-gradient(0deg, rgba(50, 53, 105, 1) 0%, rgba(90, 97, 221, 1) 100%);
 }
 
 .rock_color{
@@ -188,7 +188,7 @@
 
 .rock_background {
     background: rgb(126, 126, 126);
-    background: linear-gradient(0deg, rgba(185, 185, 186, 1) 0%, rgba(126, 126, 126, 1) 100%);
+    background: linear-gradient(0deg, rgba(126, 126, 126, 1) 0%, rgba(185, 185, 186, 1) 100%);
 }
 
 .dark_color{
@@ -214,7 +214,7 @@
 
 .ice_background {
     background: rgb(111, 190, 223);
-    background: linear-gradient(0deg, rgba(196, 235, 251, 1) 0%, rgba(111, 190, 223, 1) 100%);
+    background: linear-gradient(0deg, rgba(111, 190, 223, 1) 0%, rgba(196, 235, 251, 1) 100%);
 }
 
 .steel_color{
@@ -227,7 +227,7 @@
 
 .steel_background {
     background: rgb(94, 115, 108);
-    background: linear-gradient(0deg, rgba(155, 183, 173, 1) 0%, rgba(94, 115, 108, 1) 100%);
+    background: linear-gradient(0deg, rgba(94, 115, 108, 1) 0%, rgba(155, 183, 173, 1) 100%);
 }
 .dragon_color{
     color:#1e656e;
@@ -251,7 +251,7 @@
 
 .magic_background {
     background: rgb(151, 27, 69);
-    background: linear-gradient(0deg, rgba(197, 89, 126, 1) 0%, rgba(151, 27, 69, 1) 100%);
+    background: linear-gradient(0deg, rgba(151, 27, 69, 1) 0%, rgba(197, 89, 126, 1) 100%);
 }
 
 .electric_color{
@@ -264,7 +264,7 @@
 
 .electric_background {
     background: rgb(12, 19, 149);
-    background: linear-gradient(0deg, rgba(142, 148, 254, 1) 0%, rgba(12, 19, 149, 1) 100%);
+    background: linear-gradient(0deg, rgba(12, 19, 149, 1) 0%, rgba(142, 148, 254, 1) 100%);
 }
 .terrestrial_color{
     color: #654008;
