@@ -17,6 +17,7 @@ import {
 import { DataSchema } from '../utils'
 
 const usePokeData = () => {
+    const [isLoaded, setIsLoaded] = useState(false)
     const dispatch = useDispatch()
     const pageIndex = useSelector(pIndex)
     const dataLength = useSelector(dLength)
@@ -55,6 +56,9 @@ const usePokeData = () => {
                         })) 
                     })
         })
+        setTimeout(() => {
+            setIsLoaded(true)            
+        }, 250);
     }
 
     //01
@@ -65,7 +69,7 @@ const usePokeData = () => {
     useEffect(() => {
 
         dispatch(changePageIndex(pageNumber))
-        console.log(pIndex)
+        setIsLoaded(false)
 
     }, [pageNumber])
     //03
@@ -82,6 +86,7 @@ const usePokeData = () => {
     }, [listUrl])
 
     return {
+        isLoaded,
         listUrl,
         listPokeData,
         setPageNumber,

@@ -7,8 +7,9 @@ import {
 import '../css/PokemonCardWrapper.css'
 import '../css/PokemonCard.css'
 import '../css/Pokedex.css'
-import { Pagination, PaginationItem } from '@mui/material';
+import { Pagination, PaginationItem, Skeleton } from '@mui/material';
 import usePokeData from '../../hooks/usePokeData'
+import Header from '../Header'
 
 
 export const PokemonCardWrapper = (props) => {
@@ -20,8 +21,7 @@ export const PokemonCardWrapper = (props) => {
 };
 
 export const PokemonCard = ({ data }) => {
-    const [isLoaded, setIsLoaded] = useState(false)
-
+    const [imgLoaded, setImgLoaded] = useState(false)
     //key = [background, head, color]
     const getStyleByKey = (key) => {
         if (data) {
@@ -31,13 +31,30 @@ export const PokemonCard = ({ data }) => {
         }
     }
 
+    useEffect(() => {
+        var pokeImg = new Image
+        pokeImg.src = data.image
+
+        pokeImg.onload = function () {
+            setTimeout(() => {
+                setImgLoaded(true)
+            }, 250);
+            //imgContainer.innerHTML = "<img src='images/test.png'>";
+        };
+    }, [])
+
     return (
         <section className={`card-container__border ${getStyleByKey('background')}`}>
             <a href={`#/pokedex/${data.id}`}>
                 <div className='card-container'>
                     <div className={`card__header ${getStyleByKey('head')}`}>
                         <div className='card__header-inner'>
-                            <img src={data.image} alt="imagen" />
+                            {
+                                imgLoaded ?
+                                    <img src={data.image} alt="imagen" /> :
+                                    <Skeleton variant="circular" width={140} height={140} sx={{ bgcolor: 'grey.400' }} />
+                            }
+
                         </div>
                     </div>
                     <div className='card__body'>
@@ -77,6 +94,7 @@ export const PokemonCard = ({ data }) => {
 
 export const Pokedex = () => {
     const {
+        isLoaded,
         listUrl,
         listPokeData,
         setPageNumber,
@@ -86,12 +104,9 @@ export const Pokedex = () => {
     } = usePokeData()
     const paginatorBtnStyle = { width: '5rem', height: '5rem', fontSize: '1.5rem' }
 
-    const renderPokemons = () => {
-        
-        return listPokeData.map(pokemon => (
-            <PokemonCard data={pokemon} key={pokemon.name} />
-        ))
-    }
+    const renderPokemons = () => (listPokeData.map(pokemon => (
+        <PokemonCard data={pokemon} key={pokemon.name} />
+    )))
 
     const changePageHandler = (evt, value) => {
         localDb.delete()
@@ -99,24 +114,25 @@ export const Pokedex = () => {
     }
 
     useEffect(() => {
-        if (localDb.loadData().page.data.length > 0) {
-
+        if (listPokeData) {
+            console.log(listPokeData)
         }
-    }, [])
+    }, [listPokeData])
 
     return (
         <div className='pokedex-container'>
-            <h1>Pokedex</h1>
+            
+            <Header />
             <PokemonCardWrapper>
-                {renderPokemons()}
+                {isLoaded ? renderPokemons() : <h1>LOADING...</h1>}
             </PokemonCardWrapper>
             <Pagination
                 renderItem={item => (<PaginationItem sx={paginatorBtnStyle} {...item} />)}
                 onChange={changePageHandler}
                 defaultPage={1}
-                page={pageIndex??1}
+                page={pageIndex ?? 1}
                 color='rojo'
-                count={Math.ceil(dataLength/pageLength)}
+                count={Math.ceil(dataLength / pageLength)}
                 shape="rounded" />
         </div>
     );
