@@ -29,7 +29,7 @@ export const JInputTextButton = ({ onSubmit }) => {
         color='rojo'
         sx={{ borderRadius: 0, height: 68, width: 209, fontSize: '1.5rem' }} 
         variant="contained"
-        onClick={onLocalSubmit}>Bigin</Button>
+        onClick={onLocalSubmit}>Begin</Button>
     </Paper>
   )
 }

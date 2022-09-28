@@ -1,0 +1,243 @@
+:root {
+    --page-background-color: #F6F6F6;
+    --container-background-color: #E5E5E5;
+    --progress-cointainer-background-color: #e2e2e2;
+    --line-color: #CCC;
+}
+
+.pokemon-profile_main-container {
+    display: flex;
+    flex-flow: column nowrap;
+    gap: 1rem;
+    align-items: center;
+    margin-top: 250px;
+
+    min-width: 350px;
+    max-width: 1024px;
+    width: 90%;
+    margin-bottom: 5rem;
+    padding-bottom: 2rem;
+    background-color: var(--page-background-color);
+}
+
+.pokemon-profile__container {
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
+    background-color: var(--container-background-color);
+}
+
+.pokemon-profile__img-container {
+    height: 185px;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+.pokemon-profile__img {
+    position: absolute;
+    bottom: -2rem;
+}
+
+.pokemon-profile__h1_id {
+    font-size: 40px;
+    color: #416460;
+    border: solid 1px #416460;
+    display: inline-block;
+    width: 5rem;
+    text-align: center;
+    margin-top: 1rem;
+}
+
+.pokemos-profile__h1-container {
+    font-size: 40px;
+    color: #416460;
+    position: relative;
+    width: 100%;
+    text-align: center;
+}
+
+.pokemon-profile__h1_name {
+    font-size: 40px;
+    color: #416460;
+    display: inline-block;
+    background-color: var(--page-background-color);
+    padding: 0 2rem;
+    position: inherit;
+    z-index: 2;
+}
+
+.pokemos-profile__h1-container::after {
+    content: '';
+    background-color: var(--line-color);
+    height: 2px;
+    position: absolute;
+    top: 50%;
+    left: 3rem;
+    right: 3rem;
+    z-index: 0;
+}
+
+.pokemon-profile__feature {
+    display: flex;
+    flex-flow: row nowrap;
+    gap: 4rem;
+}
+
+.pokemon-profile__feature>li {
+    text-align: center;
+}
+
+.pokemon-profile__feature>li h5 {
+    color: #0F0F2D;
+    text-align: center;
+}
+
+.pokemon-profile__feature>li span {
+    color: #0F0F2D;
+    font-size: 25px;
+}
+
+
+.pokemon-profile__skills1 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    width: 100%;
+    justify-content: space-around;
+    text-align: center;
+}
+
+.pokemon-profile__skills1>li {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: center;
+}
+
+.pokemon-profile__skills1>li>ul,
+.pokemon-profile__skills1>li>ul>li {
+    width: 100%;
+}
+
+.pokemon-profile__skills1>li>ul {
+    display: flex;
+    flex-flow: column nowrap;
+    gap: 2rem;
+}
+
+.pokemon-profile__skills1>li>ul h2 {
+    font-size: 2rem;
+}
+
+.tags-grids div {
+    background-color: chocolate;
+    padding: 1rem 2rem;
+    text-align: center;
+}
+
+.tags-grids {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(10rem, 10rem));
+    justify-content: center;
+    align-content: center;
+    gap: 1rem;
+}
+
+
+
+
+
+.pokemon-profile__stats-title {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding: 0 5rem;
+    position: relative;
+}
+
+.pokemon-profile__stats-title::after {
+    content: '';
+    background-color: var(--line-color);
+    height: 2px;
+    position: absolute;
+    top: 50%;
+    left: 12rem;
+    right: 11rem;
+    z-index: 0;
+}
+
+.pokemon-profile__stats-title__h1 {
+    padding: 0;
+    text-align: left;
+}
+
+.stat__progress__ul {
+    display: flex;
+    flex-flow: column nowrap;
+    gap: 2.5rem;
+    width: 100%;
+    padding: 0 5rem;
+}
+
+.stat__progress__bar-control {}
+
+.progress-container {
+    width: 100%;
+    background-color: var(--progress-cointainer-background-color);
+    height: 2rem;
+    border-radius: 0.3rem;
+}
+
+.progress-bar {
+    width: 50%;
+    background: linear-gradient(90deg, #FCD676 -2.25%, #E6901E 133.18%);
+    border-radius: 4px;
+    height: 2rem;
+    border-radius: 0.3rem;
+}
+
+.progress-container__label {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-between;
+}
+
+
+.movements-container {
+    margin-top: 0;
+    padding: 2rem 0;
+}
+
+.movements-item-list {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
+    gap: 1rem;
+    width: 100%;
+    padding: 0 3rem;
+}
+
+.movements-item-list span {
+    background-color: #E5E5E5;
+    height: 4rem;
+    border-radius: 2rem;
+    padding: 0.25rem 2rem;
+    line-height: 3.8rem;
+}
+
+.flex-column_0_5 {
+    display: flex;
+    flex-flow: column nowrap;
+    gap: 0.5rem;
+}
+
+.box-shadow {
+    box-shadow: 0 0 10px gray;
+}
+
+ul {
+    list-style: none;
+}

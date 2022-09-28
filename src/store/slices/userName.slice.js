@@ -10,7 +10,7 @@ const userName = createSlice({
     }
 })
 
-export const name = state => state.userName
+export const _name = state => state.userName
 
 export const {changeName} = userName.actions
 

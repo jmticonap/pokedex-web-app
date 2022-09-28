@@ -1,10 +1,10 @@
 import React from 'react';
 import { Navigate, Outlet } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import { name } from '../store/slices/userName.slice'
+import { _name } from '../store/slices/userName.slice'
 
 const ProtectedRoutes = () => {
-    const userName = useSelector(name)
+    const userName = useSelector(_name)
 
     if(userName !== '')return <Outlet />
     else return <Navigate to='/' />

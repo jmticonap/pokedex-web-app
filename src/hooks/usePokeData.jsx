@@ -14,11 +14,12 @@ import {
     dLength,
     pLength
 } from '../store/slices/pokeData.slice'
-import { DataSchema } from '../utils'
+import { _name } from '../store/slices/userName.slice'
 
 const usePokeData = () => {
-    const [isLoaded, setIsLoaded] = useState(false)
     const dispatch = useDispatch()
+    const userName = useSelector(_name)
+    const [isLoaded, setIsLoaded] = useState(false)
     const pageIndex = useSelector(pIndex)
     const dataLength = useSelector(dLength)
     const pageLength = useSelector(pLength)
@@ -26,8 +27,7 @@ const usePokeData = () => {
     const listPokeData = useSelector(lstPokeData)
 
     const [pageNumber, setPageNumber] = useState(0)
-    const [passData, setPassData] = useState([])
-
+    
     const getPageUrlList = async () => {
         if (pageIndex > 0) {
             const response = await axios
@@ -86,6 +86,7 @@ const usePokeData = () => {
     }, [listUrl])
 
     return {
+        userName,
         isLoaded,
         listUrl,
         listPokeData,

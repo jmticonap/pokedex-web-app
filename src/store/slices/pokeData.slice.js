@@ -9,6 +9,7 @@ const _clearList = list => {
 const pokeData = createSlice({
     name: 'poke_data',
     initialState: {
+        exploreBy: '*',
         listUrl: [''],
         listPokeData: [],
         pageIndex: 0,
@@ -16,6 +17,10 @@ const pokeData = createSlice({
         pageLength: 20
     },
     reducers:{
+        changeExploreBy: (state, action) => {
+            if(action.payload)
+                state.exploreBy = action.payload
+        },
         clearListUrl: state => {
             _clearList(state.listUrl)
         },
@@ -45,6 +50,7 @@ const pokeData = createSlice({
     }
 })
 
+export const _exploreBy = state => state.pokeData.exploreBy
 export const lstUrl = state => state.pokeData.listUrl
 export const lstPokeData = state => state.pokeData.listPokeData
 export const pIndex = state => state.pokeData.pageIndex
@@ -52,6 +58,7 @@ export const dLength = state => state.pokeData.dataLength
 export const pLength = state => state.pokeData.pageLength
 
 export const {
+    changeExploreBy,
     clearListUrl, 
     appendListUrl, 
     clearListPokeData, 

@@ -7,9 +7,18 @@ import {
 import '../css/PokemonCardWrapper.css'
 import '../css/PokemonCard.css'
 import '../css/Pokedex.css'
-import { Pagination, PaginationItem, Skeleton } from '@mui/material';
+import '../css/Searcher.css'
+import {
+    Autocomplete, Box,
+    InputLabel, MenuItem,
+    Select, TextField,
+    Pagination, PaginationItem,
+    Skeleton
+} from "@mui/material";
 import usePokeData from '../../hooks/usePokeData'
+import usePokeDataType from '../../hooks/usePokeDataType'
 import Header from '../Header'
+import { useNavigate } from 'react-router-dom'
 
 
 export const PokemonCardWrapper = (props) => {
@@ -45,7 +54,7 @@ export const PokemonCard = ({ data }) => {
 
     return (
         <section className={`card-container__border ${getStyleByKey('background')}`}>
-            <a href={`#/pokedex/${data.id}`}>
+            <a href={`#/pokedex/${data.name}`}>
                 <div className='card-container'>
                     <div className={`card__header ${getStyleByKey('head')}`}>
                         <div className='card__header-inner'>
@@ -94,6 +103,7 @@ export const PokemonCard = ({ data }) => {
 
 export const Pokedex = () => {
     const {
+        userName,
         isLoaded,
         listUrl,
         listPokeData,
@@ -102,11 +112,50 @@ export const Pokedex = () => {
         dataLength,
         pageLength
     } = usePokeData()
+    const {
+        isSearching_t,
+        setIsSearching_t,
+        names_t, //All pokemon's name [string, string, ...]
+        isLoaded_t,
+        listUrl_t,
+        listPokeData_t,
+        setPageNumber_t,
+        pageIndex_t,
+        dataLength_t,
+        pageLength_t,
+        pokemonTypeList_t, //names of all types {name:[string], url: [string]}
+        setPokemonTypeList_t,
+        lookFor_t, setLookFor_t
+    } = usePokeDataType()
+    const navigate = useNavigate()
     const paginatorBtnStyle = { width: '5rem', height: '5rem', fontSize: '1.5rem' }
 
+
+    const navigateToProfileByName = (evt, name) => {
+        navigate(`/pokedex/${name}`)
+    }
     const renderPokemons = () => (listPokeData.map(pokemon => (
         <PokemonCard data={pokemon} key={pokemon.name} />
     )))
+
+    const changePokemonTypeHandler = evt => {
+        if (evt.target.value == '*') {
+            //Explore by All categories
+
+        } else {
+            //Explore by the given category
+            setPokemonTypeList_t(evt.target.value)
+
+        }
+    }
+
+    const renderPokemonTypeItems = () => {
+        if (pokemonTypeList_t.length > 0) {
+            const _pokemonTypeList = [{ name: 'Explor All', url: '*' }, ...pokemonTypeList_t]
+            return _pokemonTypeList
+                .map(itm => (<MenuItem key={itm.name} value={itm.url}>{itm.name}</MenuItem>))
+        }
+    }
 
     const changePageHandler = (evt, value) => {
         localDb.delete()
@@ -115,14 +164,47 @@ export const Pokedex = () => {
 
     useEffect(() => {
         if (listPokeData) {
-            console.log(listPokeData)
+            //console.log(listPokeData)
         }
     }, [listPokeData])
 
     return (
         <div className='pokedex-container'>
-            
+
             <Header />
+            <section className="searcher-section">
+                <h2>
+                    <span>Welcome {userName}</span> Here you can find your favorite pokemons!
+                </h2>
+
+                <div className="search-container">
+                    <div className="search-input-container shadow">
+                        <Autocomplete
+                            onChange={navigateToProfileByName}
+                            disablePortal={true}
+                            id="combo-box-demo"
+                            options={names_t}
+                            sx={{ width: 300, borderRadius: 0 }}
+                            renderInput={(params) => <TextField {...params} label="name" />}
+                        />
+                        <button
+                            onClick={() => searchPokemon(pokemonSearch)}
+                            className="shadow btn"
+                            disabled={isSearching_t}>
+                            Search
+                        </button>
+                    </div>
+                    <Box sx={{ boxShadow: '0px 3px 10px -2px rgba(0, 0, 0, 0.44)' }}>
+                        <Select
+                            sx={{ width: '450px' }}
+                            id="pokemon-type-select"
+                            value={pokemonTypeList_t}
+                            onChange={changePokemonTypeHandler}>
+                            {renderPokemonTypeItems()}
+                        </Select>
+                    </Box>
+                </div>
+            </section>
             <PokemonCardWrapper>
                 {isLoaded ? renderPokemons() : <h1>LOADING...</h1>}
             </PokemonCardWrapper>
