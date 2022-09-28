@@ -1,3 +1,4 @@
+
 export const cardBackgoundStyle = {
     //Change
     normal: {

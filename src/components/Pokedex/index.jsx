@@ -20,6 +20,9 @@ import usePokeDataType from '../../hooks/usePokeDataType'
 import Header from '../Header'
 import { useNavigate } from 'react-router-dom'
 
+import { loadUrlListThunk } from '../../store/slices/pokeData.slice'
+import { useDispatch } from 'react-redux'
+
 
 export const PokemonCardWrapper = (props) => {
     return (
@@ -39,18 +42,12 @@ export const PokemonCard = ({ data }) => {
             return cardBackgoundStyle['normal'][key]
         }
     }
-
-    useEffect(() => {
-        var pokeImg = new Image
-        pokeImg.src = data.image
-
-        pokeImg.onload = function () {
-            setTimeout(() => {
-                setImgLoaded(true)
-            }, 250);
-            //imgContainer.innerHTML = "<img src='images/test.png'>";
-        };
-    }, [])
+    const imgLoadedHandler = (evt)=>{
+        setImgLoaded(evt.target.complete)
+        setTimeout(() => {
+            evt.target.style.position = 'inherit'            
+        }, 250);
+    }
 
     return (
         <section className={`card-container__border ${getStyleByKey('background')}`}>
@@ -58,11 +55,20 @@ export const PokemonCard = ({ data }) => {
                 <div className='card-container'>
                     <div className={`card__header ${getStyleByKey('head')}`}>
                         <div className='card__header-inner'>
-                            {
-                                imgLoaded ?
-                                    <img src={data.image} alt="imagen" /> :
-                                    <Skeleton variant="circular" width={140} height={140} sx={{ bgcolor: 'grey.400' }} />
-                            }
+                            
+                                    <img
+                                        onLoad={imgLoadedHandler} 
+                                        src={data.image} 
+                                        alt="imagen" />
+                                    {
+                                        imgLoaded || <Skeleton 
+                                            variant="circular" 
+                                            width={140} 
+                                            height={140} 
+                                            sx={{ bgcolor: 'grey.400' }} />
+                                    }
+                                    
+                            
 
                         </div>
                     </div>
@@ -102,6 +108,7 @@ export const PokemonCard = ({ data }) => {
 
 
 export const Pokedex = () => {
+    const dispatch = useDispatch()
     const {
         userName,
         isLoaded,
@@ -144,7 +151,7 @@ export const Pokedex = () => {
 
         } else {
             //Explore by the given category
-            setPokemonTypeList_t(evt.target.value)
+            //setPokemonTypeList_t(evt.target.value)
 
         }
     }
@@ -161,6 +168,11 @@ export const Pokedex = () => {
         localDb.delete()
         setPageNumber(value)
     }
+
+    useEffect(()=>{
+        console.log("APUNTO")
+        dispatch(loadUrlListThunk())
+    },[])
 
     useEffect(() => {
         if (listPokeData) {

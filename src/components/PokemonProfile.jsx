@@ -7,6 +7,7 @@ import { ArrowBack } from "@mui/icons-material";
 import { Fab, Skeleton } from "@mui/material";
 import Header from "./Header";
 import Back from "./Back";
+import PokemonProfile2 from './PokemonProfile2'
 
 const ProgressBars = ({ stat }) => {
     const [beforeAnimation, setBeforeAnimation] = useState(0);
@@ -65,15 +66,15 @@ const PokemonProfile = () => {
         }
     }, []);
     useEffect(() => {
-        var pokeImg = new Image
-        pokeImg.src = pokemon.sprites?.other["official-artwork"]["front_default"]
+        // var pokeImg = new Image
+        // pokeImg.src = pokemon.sprites?.other["official-artwork"]["front_default"]
 
-        pokeImg.onload = function () {
-            setTimeout(() => {
-                setImgLoaded(true)
-            }, 250);
-            //imgContainer.innerHTML = "<img src='images/test.png'>";
-        };
+        // pokeImg.onload = function () {
+        //     setTimeout(() => {
+        //         setImgLoaded(true)
+        //     }, 250);
+        //     //imgContainer.innerHTML = "<img src='images/test.png'>";
+        // };
     }, [pokemon])
 
     const getStyleByKey = (key) => {
@@ -86,7 +87,7 @@ const PokemonProfile = () => {
 
     return (
         <div>
-            {isChargin && pokemon ? (
+            {isChargin ? (
                 <div className="loader-container">
                     <img
                         src="https://img1.picmix.com/output/stamp/normal/0/9/0/4/1604090_a14a5.gif"
@@ -98,23 +99,24 @@ const PokemonProfile = () => {
                 <div>
                     <Header />
                     <Back />
+
+                    
                     <main className="main-profile-container">
                         <div className="card-profile-primary">
                             <div className={`background-poke ${getStyleByKey("background")}`}>
-                                {
-                                    imgLoaded ?
-                                        <img
+                                
+                                        <img                                        
                                             className="imgProfile"
                                             src={pokemon.sprites?.other["official-artwork"]["front_default"]}
                                             alt={name} />
-                                        :
+
                                         <Skeleton 
                                             className="imgProfile"
                                             variant="circular" 
                                             width={440} 
                                             height={440} 
                                             sx={{ bgcolor: 'grey.400' }} />
-                                }
+                                
 
                             </div>
 

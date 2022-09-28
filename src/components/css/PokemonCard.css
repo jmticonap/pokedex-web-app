@@ -41,6 +41,8 @@
     object-fit: cover;
     width: auto;
     height: 100%;
+    position: absolute;
+    left: calc(50% - 62.4px);
 }
 
 .card__body {

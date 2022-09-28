@@ -1,5 +1,8 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
+import { useState, useEffect } from 'react'
+import { useDispatch } from 'react-redux'
+
+import { getRowUrlList } from './store/slices/pokedex.slice'
+
 import './App.css'
 import { HashRouter, Routes, Route } from 'react-router-dom'
 import Login from './components/Login'
@@ -7,8 +10,14 @@ import { Pokedex } from './components/Pokedex'
 import ProtectedRoutes from './components/ProtectedRoutes'
 import PokemonProfile from './components/PokemonProfile'
 import PokemonProfile2 from './components/PokemonProfile2'
+import { Search } from './components/Search'
 
 function App() {
+  const dispatch = useDispatch()
+
+  useEffect(()=>{
+    dispatch(getRowUrlList())
+  },[])
 
   return (
     <HashRouter>
@@ -16,9 +25,11 @@ function App() {
         <Routes>
           <Route path='/' element={<Login />} />
 
+          <Route path='/search' element={<Search />} />
+
           <Route path='/pokedex' element={<Pokedex />} />
           <Route path='/pokedex/:name' element={<PokemonProfile />} />
-          <Route path='/pokedex2' element={<PokemonProfile2 />} />
+          <Route path='/pokedex2/:name' element={<PokemonProfile2 />} />
 
         </Routes>
       </div>

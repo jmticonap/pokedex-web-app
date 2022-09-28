@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import axios from 'axios'
 
 const _clearList = list => {
     while(list.length>0){
@@ -49,6 +50,25 @@ const pokeData = createSlice({
         }
     }
 })
+
+//TODO: verify async in concat functions
+export const loadUrlListThunk = (index) => async(dispatch, getState) => {
+    const state = getState().pokeData
+    
+    const url = state.exploreBy === '*'?
+        'https://pokeapi.co/api/v2/pokemon?limit=1200':
+        `https://pokeapi.co/api/v2/type/${index}/`
+    
+    const res = await axios.get(url)
+    if(state.exploreBy === '*'){
+        //All data urls
+        console.log(res.data)
+    } else {
+        //Data filter by TYPE
+        console.log(res.data)
+    }
+        
+}
 
 export const _exploreBy = state => state.pokeData.exploreBy
 export const lstUrl = state => state.pokeData.listUrl
