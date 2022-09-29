@@ -12,6 +12,7 @@ const Back = () => {
       className="sss"
       onClick={() => navigate(-1)}
       aria-label="add"
+      sx={{position: 'absolute', left: '10px', top: '175px'}}
     >
       <ArrowBack />
     </Fab>

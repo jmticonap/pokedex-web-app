@@ -45,9 +45,10 @@
     color: #416460;
     border: solid 1px #416460;
     display: inline-block;
-    width: 5rem;
+    min-width: 5rem;
     text-align: center;
     margin-top: 1rem;
+    padding: 0 1rem;
 }
 
 .pokemos-profile__h1-container {

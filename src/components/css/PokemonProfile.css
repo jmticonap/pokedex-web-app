@@ -38,6 +38,7 @@
 .imgProfile {
   margin-top: -135px;
   width: 350px;
+  position: absolute;
 }
 
 .card-profile-primary {
@@ -145,6 +146,7 @@
 
 .stats-section {
   padding: 30px;
+  width: 100%;
 }
 
 .moves-section-container {

@@ -45,7 +45,6 @@ const pokeData = createSlice({
             _clearList(state.listPokeData)
         },
         appendListPokeData: (state, action) => {
-            console.log(state.exploreBy)
             if (action.payload) {
                 return {
                     ...state,
@@ -69,6 +68,7 @@ const pokeData = createSlice({
 export const loadPokeDataThunk = () => async (dispatch, getState) => {
     const state = getState().pokeData
     
+    const result = []
     if (state.listUrl.length > 0) {
         const pi = state.pageIndex
         const pl = state.pageLength
@@ -78,7 +78,7 @@ export const loadPokeDataThunk = () => async (dispatch, getState) => {
         //Make sure the last page is not complete
         const to = (from + pl - 1) > dl ? dl : from + pl - 1
 
-        const result = []
+        
 
         for (let i = from; i <= to; i++) {
             const res = await axios.get(state.listUrl[i]['url'])
@@ -88,12 +88,12 @@ export const loadPokeDataThunk = () => async (dispatch, getState) => {
                 name: res.data.name,
                 types: res.data.types.map(itm => itm.type.name),
                 stats: res.data.stats.map(itm => ({ name: itm.stat.name, value: itm.base_stat })),
-                image: res.data.sprites.other['home']['front_default']
+                image: res.data.sprites.other['official-artwork']['front_default']
             })
         }
         
-        dispatch(appendListPokeData(result))
     }
+    dispatch(appendListPokeData(result))
 
 
 }

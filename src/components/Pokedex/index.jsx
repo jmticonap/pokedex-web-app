@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
+import imgPokeBall from '../../assets/img/poke_ball.svg'
 import {
-    localDb,
     cardBackgoundStyle,
     capitalize
 } from '../../utils'
@@ -16,21 +16,18 @@ import {
     Skeleton,
     FormControl
 } from "@mui/material";
-import usePokeData from '../../hooks/usePokeData'
-import usePokeDataType from '../../hooks/usePokeDataType'
 import Header from '../Header'
 import { useNavigate, useParams } from 'react-router-dom'
-
-
 import { useDispatch } from 'react-redux'
-import { 
-    changeExploreBy, 
-    loadlistTypeUrlThunk, 
+import {
+    changeExploreBy,
+    loadlistTypeUrlThunk,
     loadListUrlThunk,
     changePageIndex,
     loadPokeDataThunk
 } from '../../store/slices/pokeData.slice'
-import { useSelector } from 'react-redux' 
+import { useSelector } from 'react-redux'
+import { loadNamesThunk } from "../../store/slices/pokemonNamesSlice";
 
 
 export const PokemonCardWrapper = (props) => {
@@ -51,10 +48,10 @@ export const PokemonCard = ({ data }) => {
             return cardBackgoundStyle['normal'][key]
         }
     }
-    const imgLoadedHandler = (evt)=>{
+    const imgLoadedHandler = (evt) => {
         setImgLoaded(evt.target.complete)
         setTimeout(() => {
-            evt.target.style.position = 'inherit'            
+            evt.target.style.position = 'inherit'
         }, 250);
     }
 
@@ -64,18 +61,18 @@ export const PokemonCard = ({ data }) => {
                 <div className='card-container'>
                     <div className={`card__header ${getStyleByKey('head')}`}>
                         <div className='card__header-inner'>
-                            
-                                    <img
-                                        onLoad={imgLoadedHandler} 
-                                        src={data.image} 
-                                        alt="imagen" />
-                                    {
-                                        imgLoaded || <Skeleton 
-                                            variant="circular" 
-                                            width={140} 
-                                            height={140} 
-                                            sx={{ bgcolor: 'grey.400' }} />
-                                    }
+
+                            <img
+                                onLoad={imgLoadedHandler}
+                                src={data.image ? data.image : imgPokeBall}
+                                alt="imagen" />
+                            {
+                                imgLoaded || <Skeleton
+                                    variant="circular"
+                                    width={140}
+                                    height={140}
+                                    sx={{ bgcolor: 'grey.400' }} />
+                            }
 
                         </div>
                     </div>
@@ -90,19 +87,19 @@ export const PokemonCard = ({ data }) => {
                             <div className='card__body__grid'>
                                 <div>
                                     <h6 className='subtitle_color'>HP</h6>
-                                    <h3 className={getStyleByKey('color')}>{data.stats.find(i=>i.name==='hp')['value']}</h3>
+                                    <h3 className={getStyleByKey('color')}>{data.stats.find(i => i.name === 'hp')['value']}</h3>
                                 </div >
                                 <div>
                                     <h6 className='subtitle_color'>ATTACK</h6>
-                                    <h3 className={getStyleByKey('color')}>{data.stats.find(i=>i.name==='attack')['value']}</h3>
+                                    <h3 className={getStyleByKey('color')}>{data.stats.find(i => i.name === 'attack')['value']}</h3>
                                 </div>
                                 <div>
                                     <h6 className='subtitle_color'>DEFENSE</h6>
-                                    <h3 className={getStyleByKey('color')}>{data.stats.find(i=>i.name==='defense')['value']}</h3>
+                                    <h3 className={getStyleByKey('color')}>{data.stats.find(i => i.name === 'defense')['value']}</h3>
                                 </div>
                                 <div>
                                     <h6 className='subtitle_color'>SPEED</h6>
-                                    <h3 className={getStyleByKey('color')}>{data.stats.find(i=>i.name==='speed')['value']}</h3>
+                                    <h3 className={getStyleByKey('color')}>{data.stats.find(i => i.name === 'speed')['value']}</h3>
                                 </div>
                             </div >
                         </div >
@@ -115,19 +112,20 @@ export const PokemonCard = ({ data }) => {
 
 
 export const Pokedex = () => {
-    const userName = useParams('name').name
+    const userName = useSelector( state => state.userName )
     const dispatch = useDispatch()
     const exploreBy = useSelector(state => state.pokeData.exploreBy)
-    const listTypeUrl = useSelector( state => state.pokeData.listTypeUrl )
-    const listUrl = useSelector( state => state.pokeData.listUrl )
-    const listPokeData = useSelector ( state => state.pokeData.listPokeData )
-    const pageIndex = useSelector( state => state.pokeData.pageIndex )
-    const dataLength = useSelector( state => state.pokeData.dataLength )
-    const pageLength = useSelector( state => state.pokeData.pageLength )
+    const listTypeUrl = useSelector(state => state.pokeData.listTypeUrl)
+    const listUrl = useSelector(state => state.pokeData.listUrl)
+    const listPokeData = useSelector(state => state.pokeData.listPokeData)
+    const pageIndex = useSelector(state => state.pokeData.pageIndex)
+    const dataLength = useSelector(state => state.pokeData.dataLength)
+    const pageLength = useSelector(state => state.pokeData.pageLength)
+    const pokeAllNames = useSelector((state) => state.pokemonNamesSlice)
 
     const [isLoaded, setIsLoaded] = useState(false)
     const [pType, setPType] = useState('*')
- 
+
     const navigate = useNavigate()
     const paginatorBtnStyle = { width: '5rem', height: '5rem', fontSize: '1.5rem' }
 
@@ -135,11 +133,11 @@ export const Pokedex = () => {
     const navigateToProfileByName = (evt, name) => {
         navigate(`/pokedex/${name}`)
     }
-    const renderPokemons = () =>{
+    const renderPokemons = () => {
         return listPokeData.map(pokemon => (
             <PokemonCard data={pokemon} key={pokemon.name} />
         ))
-    } 
+    }
 
     const changePokemonTypeHandler = evt => {
         setPType(evt.target.value)
@@ -156,30 +154,29 @@ export const Pokedex = () => {
 
     const changePageHandler = (evt, value) => {
         dispatch(changePageIndex(value))
-        //setPageNumber(value)
     }
 
-    useEffect(()=>{
+    useEffect(() => {
         dispatch(loadlistTypeUrlThunk())
-        
-    },[])
-    useEffect(()=>{
+        dispatch(loadNamesThunk())
+    }, [])
+    useEffect(() => {
         dispatch(loadListUrlThunk(pType))
-    },[exploreBy])
-    useEffect(()=>{
+    }, [exploreBy])
+    useEffect(() => {
+        if (listUrl.length == 0) console.log("No hay elementos")
         dispatch(changePageIndex(1))
         dispatch(loadPokeDataThunk())
-    },[listUrl])
-    useEffect(()=>{
+    }, [listUrl])
+    useEffect(() => {
         //dispatch(changePageIndex(pageIndex))
 
         //Load data for cards
         dispatch(loadPokeDataThunk())
-        console.log("la pagina cambió")
-    },[pageIndex])
-    useEffect(()=>{
+    }, [pageIndex])
+    useEffect(() => {
         setIsLoaded(true)
-    },[listPokeData])
+    }, [listPokeData])
 
     return (
         <div className='pokedex-container'>
@@ -196,26 +193,26 @@ export const Pokedex = () => {
                             onChange={navigateToProfileByName}
                             disablePortal={true}
                             id="combo-box-demo"
-                            options={['Ada','Segundo','Mia','Donovan']}
+                            options={pokeAllNames}
                             sx={{ width: 300, borderRadius: 0 }}
                             renderInput={(params) => <TextField {...params} label="name" />}
                         />
                         <button
                             onClick={() => searchPokemon(pokemonSearch)}
                             className="shadow btn"
-                            >
+                        >
                             Search
                         </button>
                     </div>
                     <Box sx={{ boxShadow: '0px 3px 10px -2px rgba(0, 0, 0, 0.44)' }}>
-                    <FormControl fullWidth  >
-                        <InputLabel id="type-select-label">Pokemon type</InputLabel>
+                        <FormControl fullWidth  >
+                            <InputLabel id="type-select-label">Pokemon type</InputLabel>
                             <Select
                                 sx={{ width: '450px' }}
                                 id="pokemon-type-select"
                                 labelId='type-select-label'
                                 label='Pokemon Type'
-                                value={pType}                   
+                                value={pType}
                                 onChange={changePokemonTypeHandler}>
                                 {renderPokemonTypeItems()}
                             </Select>
