@@ -76,8 +76,6 @@ export const PokemonCard = ({ data }) => {
                                             height={140} 
                                             sx={{ bgcolor: 'grey.400' }} />
                                     }
-                                    
-                            
 
                         </div>
                     </div>
@@ -121,11 +119,14 @@ export const Pokedex = () => {
     const dispatch = useDispatch()
     const exploreBy = useSelector(state => state.pokeData.exploreBy)
     const listTypeUrl = useSelector( state => state.pokeData.listTypeUrl )
+    const listUrl = useSelector( state => state.pokeData.listUrl )
+    const listPokeData = useSelector ( state => state.pokeData.listPokeData )
     const pageIndex = useSelector( state => state.pokeData.pageIndex )
     const dataLength = useSelector( state => state.pokeData.dataLength )
     const pageLength = useSelector( state => state.pokeData.pageLength )
 
     const [isLoaded, setIsLoaded] = useState(false)
+    const [pType, setPType] = useState('*')
  
     const navigate = useNavigate()
     const paginatorBtnStyle = { width: '5rem', height: '5rem', fontSize: '1.5rem' }
@@ -135,22 +136,14 @@ export const Pokedex = () => {
         navigate(`/pokedex/${name}`)
     }
     const renderPokemons = () =>{
-
-        listPokeData.map(pokemon => (
+        return listPokeData.map(pokemon => (
             <PokemonCard data={pokemon} key={pokemon.name} />
         ))
-
     } 
 
     const changePokemonTypeHandler = evt => {
-        if (evt.target.value == '*') {
-            //Explore by All categories
-
-        } else {
-            //Explore by the given category
-            //setPokemonTypeList_t(evt.target.value)
-
-        }
+        setPType(evt.target.value)
+        dispatch(changeExploreBy(evt.target.value))
     }
 
     const renderPokemonTypeItems = () => {
@@ -163,19 +156,30 @@ export const Pokedex = () => {
 
     const changePageHandler = (evt, value) => {
         dispatch(changePageIndex(value))
-        setPageNumber(value)
+        //setPageNumber(value)
     }
 
     useEffect(()=>{
         dispatch(loadlistTypeUrlThunk())
         
-        //Load data for cards
-        dispatch(loadPokeDataThunk())
     },[])
     useEffect(()=>{
-        
-        dispatch(loadListUrlThunk(1))
+        dispatch(loadListUrlThunk(pType))
     },[exploreBy])
+    useEffect(()=>{
+        dispatch(changePageIndex(1))
+        dispatch(loadPokeDataThunk())
+    },[listUrl])
+    useEffect(()=>{
+        //dispatch(changePageIndex(pageIndex))
+
+        //Load data for cards
+        dispatch(loadPokeDataThunk())
+        console.log("la pagina cambió")
+    },[pageIndex])
+    useEffect(()=>{
+        setIsLoaded(true)
+    },[listPokeData])
 
     return (
         <div className='pokedex-container'>
@@ -204,14 +208,14 @@ export const Pokedex = () => {
                         </button>
                     </div>
                     <Box sx={{ boxShadow: '0px 3px 10px -2px rgba(0, 0, 0, 0.44)' }}>
-                    <FormControl fullWidth>
+                    <FormControl fullWidth  >
                         <InputLabel id="type-select-label">Pokemon type</InputLabel>
                             <Select
                                 sx={{ width: '450px' }}
                                 id="pokemon-type-select"
                                 labelId='type-select-label'
                                 label='Pokemon Type'
-                                value={'*'}                              
+                                value={pType}                   
                                 onChange={changePokemonTypeHandler}>
                                 {renderPokemonTypeItems()}
                             </Select>

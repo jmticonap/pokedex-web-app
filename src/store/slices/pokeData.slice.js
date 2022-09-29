@@ -10,8 +10,8 @@ const _clearList = list => {
 const pokeData = createSlice({
     name: 'poke_data',
     initialState: {
-        exploreBy: '*l',
-        listUrl: [''],
+        exploreBy: '*',
+        listUrl: [],
         listTypeUrl: [],
         listPokeData: [],
         pageIndex: 0,
@@ -45,6 +45,7 @@ const pokeData = createSlice({
             _clearList(state.listPokeData)
         },
         appendListPokeData: (state, action) => {
+            console.log(state.exploreBy)
             if (action.payload) {
                 return {
                     ...state,
@@ -67,7 +68,7 @@ const pokeData = createSlice({
 //Get data of pokemos by page
 export const loadPokeDataThunk = () => async (dispatch, getState) => {
     const state = getState().pokeData
-
+    
     if (state.listUrl.length > 0) {
         const pi = state.pageIndex
         const pl = state.pageLength
@@ -80,11 +81,8 @@ export const loadPokeDataThunk = () => async (dispatch, getState) => {
         const result = []
 
         for (let i = from; i <= to; i++) {
-            const url = state.exploreBy === '*'
-                ? state.listUrl[i]['url']
-                : state.listTypeUrl[i]['url']
+            const res = await axios.get(state.listUrl[i]['url'])
 
-            const res = await axios.get(url)
             result.push({
                 id: res.data.id,
                 name: res.data.name,
@@ -93,6 +91,7 @@ export const loadPokeDataThunk = () => async (dispatch, getState) => {
                 image: res.data.sprites.other['home']['front_default']
             })
         }
+        
         dispatch(appendListPokeData(result))
     }
 
@@ -106,7 +105,7 @@ export const loadlistTypeUrlThunk = () => async (dispatch, getState) => {
 }
 
 //Get list of pokemons from generic list or filtered by type
-export const loadListUrlThunk = (index) => async (dispatch, getState) => {
+export const loadListUrlThunk = (url) => async (dispatch, getState) => {
     const state = getState().pokeData
 
     if(state.exploreBy === '*'){
@@ -115,7 +114,7 @@ export const loadListUrlThunk = (index) => async (dispatch, getState) => {
         dispatch(appendListUrl(res.data.results))
         dispatch(setDataLength(res.data.count))    
     } else {
-        const res = await axios.get(`https://pokeapi.co/api/v2/type/${index}/`)
+        const res = await axios.get(url)
         //All data urls
         dispatch(appendListUrl(res.data.pokemon.map(i => i.pokemon)))
         dispatch(setDataLength(res.data.pokemon.length))
