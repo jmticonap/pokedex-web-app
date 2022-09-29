@@ -9,20 +9,26 @@ import './css/Searcher.css'
 import {
     Autocomplete, TextField, Skeleton
 } from "@mui/material";
-
+import axios from 'axios'
 import Header from './Header'
 import { useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { _name } from '../store/slices/userName.slice'
-import { allNames } from '../store/slices/pokedex.slice'
 
 
 export const Search = () => {
-    const pokemonNames = useSelector(allNames)
+    const [allNames, setAllNames] = useState([])
     
     // const navigateToProfileByName = (evt, value)=>{
 
     // }
+
+    useEffect(()=>{
+        axios.get('https://pokeapi.co/api/v2/pokemon/?limit=1200')
+            .then(res => {
+                setAllNames( ...res.data.results.map(i => i.name) )
+            })
+    },[])
 
     useEffect(()=>{
         console.log(pokemonNames)

@@ -1,8 +1,3 @@
-import { useState, useEffect } from 'react'
-import { useDispatch } from 'react-redux'
-
-import { getRowUrlList } from './store/slices/pokedex.slice'
-
 import './App.css'
 import { HashRouter, Routes, Route } from 'react-router-dom'
 import Login from './components/Login'
@@ -13,11 +8,6 @@ import PokemonProfile2 from './components/PokemonProfile2'
 import { Search } from './components/Search'
 
 function App() {
-  const dispatch = useDispatch()
-
-  useEffect(()=>{
-    dispatch(getRowUrlList())
-  },[])
 
   return (
     <HashRouter>

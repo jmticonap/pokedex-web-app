@@ -13,15 +13,24 @@ import {
     InputLabel, MenuItem,
     Select, TextField,
     Pagination, PaginationItem,
-    Skeleton
+    Skeleton,
+    FormControl
 } from "@mui/material";
 import usePokeData from '../../hooks/usePokeData'
 import usePokeDataType from '../../hooks/usePokeDataType'
 import Header from '../Header'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 
-import { loadUrlListThunk } from '../../store/slices/pokeData.slice'
+
 import { useDispatch } from 'react-redux'
+import { 
+    changeExploreBy, 
+    loadlistTypeUrlThunk, 
+    loadListUrlThunk,
+    changePageIndex,
+    loadPokeDataThunk
+} from '../../store/slices/pokeData.slice'
+import { useSelector } from 'react-redux' 
 
 
 export const PokemonCardWrapper = (props) => {
@@ -108,32 +117,16 @@ export const PokemonCard = ({ data }) => {
 
 
 export const Pokedex = () => {
+    const userName = useParams('name').name
     const dispatch = useDispatch()
-    const {
-        userName,
-        isLoaded,
-        listUrl,
-        listPokeData,
-        setPageNumber,
-        pageIndex,
-        dataLength,
-        pageLength
-    } = usePokeData()
-    const {
-        isSearching_t,
-        setIsSearching_t,
-        names_t, //All pokemon's name [string, string, ...]
-        isLoaded_t,
-        listUrl_t,
-        listPokeData_t,
-        setPageNumber_t,
-        pageIndex_t,
-        dataLength_t,
-        pageLength_t,
-        pokemonTypeList_t, //names of all types {name:[string], url: [string]}
-        setPokemonTypeList_t,
-        lookFor_t, setLookFor_t
-    } = usePokeDataType()
+    const exploreBy = useSelector(state => state.pokeData.exploreBy)
+    const listTypeUrl = useSelector( state => state.pokeData.listTypeUrl )
+    const pageIndex = useSelector( state => state.pokeData.pageIndex )
+    const dataLength = useSelector( state => state.pokeData.dataLength )
+    const pageLength = useSelector( state => state.pokeData.pageLength )
+
+    const [isLoaded, setIsLoaded] = useState(false)
+ 
     const navigate = useNavigate()
     const paginatorBtnStyle = { width: '5rem', height: '5rem', fontSize: '1.5rem' }
 
@@ -141,9 +134,13 @@ export const Pokedex = () => {
     const navigateToProfileByName = (evt, name) => {
         navigate(`/pokedex/${name}`)
     }
-    const renderPokemons = () => (listPokeData.map(pokemon => (
-        <PokemonCard data={pokemon} key={pokemon.name} />
-    )))
+    const renderPokemons = () =>{
+
+        listPokeData.map(pokemon => (
+            <PokemonCard data={pokemon} key={pokemon.name} />
+        ))
+
+    } 
 
     const changePokemonTypeHandler = evt => {
         if (evt.target.value == '*') {
@@ -157,28 +154,28 @@ export const Pokedex = () => {
     }
 
     const renderPokemonTypeItems = () => {
-        if (pokemonTypeList_t.length > 0) {
-            const _pokemonTypeList = [{ name: 'Explor All', url: '*' }, ...pokemonTypeList_t]
+        if (listTypeUrl?.length > 0) {
+            const _pokemonTypeList = [{ name: 'Explor All', url: '*' }, ...listTypeUrl]
             return _pokemonTypeList
                 .map(itm => (<MenuItem key={itm.name} value={itm.url}>{itm.name}</MenuItem>))
         }
     }
 
     const changePageHandler = (evt, value) => {
-        localDb.delete()
+        dispatch(changePageIndex(value))
         setPageNumber(value)
     }
 
     useEffect(()=>{
-        console.log("APUNTO")
-        dispatch(loadUrlListThunk())
+        dispatch(loadlistTypeUrlThunk())
+        
+        //Load data for cards
+        dispatch(loadPokeDataThunk())
     },[])
-
-    useEffect(() => {
-        if (listPokeData) {
-            //console.log(listPokeData)
-        }
-    }, [listPokeData])
+    useEffect(()=>{
+        
+        dispatch(loadListUrlThunk(1))
+    },[exploreBy])
 
     return (
         <div className='pokedex-container'>
@@ -195,25 +192,30 @@ export const Pokedex = () => {
                             onChange={navigateToProfileByName}
                             disablePortal={true}
                             id="combo-box-demo"
-                            options={names_t}
+                            options={['Ada','Segundo','Mia','Donovan']}
                             sx={{ width: 300, borderRadius: 0 }}
                             renderInput={(params) => <TextField {...params} label="name" />}
                         />
                         <button
                             onClick={() => searchPokemon(pokemonSearch)}
                             className="shadow btn"
-                            disabled={isSearching_t}>
+                            >
                             Search
                         </button>
                     </div>
                     <Box sx={{ boxShadow: '0px 3px 10px -2px rgba(0, 0, 0, 0.44)' }}>
-                        <Select
-                            sx={{ width: '450px' }}
-                            id="pokemon-type-select"
-                            value={pokemonTypeList_t}
-                            onChange={changePokemonTypeHandler}>
-                            {renderPokemonTypeItems()}
-                        </Select>
+                    <FormControl fullWidth>
+                        <InputLabel id="type-select-label">Pokemon type</InputLabel>
+                            <Select
+                                sx={{ width: '450px' }}
+                                id="pokemon-type-select"
+                                labelId='type-select-label'
+                                label='Pokemon Type'
+                                value={'*'}                              
+                                onChange={changePokemonTypeHandler}>
+                                {renderPokemonTypeItems()}
+                            </Select>
+                        </FormControl>
                     </Box>
                 </div>
             </section>
@@ -226,7 +228,7 @@ export const Pokedex = () => {
                 defaultPage={1}
                 page={pageIndex ?? 1}
                 color='rojo'
-                count={Math.ceil(dataLength / pageLength)}
+                count={Math.ceil(dataLength / pageLength) || 1}
                 shape="rounded" />
         </div>
     );

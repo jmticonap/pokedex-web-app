@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import axios from 'axios'
 
 const _clearList = list => {
-    while(list.length>0){
+    while (list.length > 0) {
         list.pop()
     }
 }
@@ -10,34 +10,47 @@ const _clearList = list => {
 const pokeData = createSlice({
     name: 'poke_data',
     initialState: {
-        exploreBy: '*',
+        exploreBy: '*l',
         listUrl: [''],
+        listTypeUrl: [],
         listPokeData: [],
         pageIndex: 0,
         dataLength: 0,
-        pageLength: 20
+        pageLength: 10
     },
-    reducers:{
+    reducers: {
         changeExploreBy: (state, action) => {
-            if(action.payload)
+            if (action.payload)
                 state.exploreBy = action.payload
         },
         clearListUrl: state => {
             _clearList(state.listUrl)
+            console.log(state.listUrl)
         },
         appendListUrl: (state, action) => {
-            console.log(`Largo de listUrl: ${state.listUrl.length}`)
-            if(action.payload)
-                state.listUrl.push(...action.payload)
+            if (action.payload && action.payload.__proto__ === ([]).__proto__)
+                //Verifying if action.payload have an array
+                return {
+                    ...state, listUrl: action.payload
+                }
+        },
+        appendListTypeUrl: (state, action) => {
+            if (action.payload && action.payload.__proto__ === ([]).__proto__)
+                //Verifying if action.payload have an array
+                return {
+                    ...state, listTypeUrl: action.payload
+                }
         },
         clearListPokeData: state => {
             _clearList(state.listPokeData)
         },
         appendListPokeData: (state, action) => {
-            if(action.payload){
-                state.listPokeData.push(action.payload)
+            if (action.payload) {
+                return {
+                    ...state,
+                    listPokeData: [...action.payload].sort((a, b) => a.id - b.id)
+                }
             }
-            state.listPokeData.sort((a,b)=> a.id-b.id)
         },
         changePageIndex: (state, action) => {
             state.pageIndex = action.payload
@@ -51,23 +64,62 @@ const pokeData = createSlice({
     }
 })
 
-//TODO: verify async in concat functions
-export const loadUrlListThunk = (index) => async(dispatch, getState) => {
+//Get data of pokemos by page
+export const loadPokeDataThunk = () => async (dispatch, getState) => {
     const state = getState().pokeData
-    
-    const url = state.exploreBy === '*'?
-        'https://pokeapi.co/api/v2/pokemon?limit=1200':
-        `https://pokeapi.co/api/v2/type/${index}/`
-    
-    const res = await axios.get(url)
-    if(state.exploreBy === '*'){
-        //All data urls
-        console.log(res.data)
-    } else {
-        //Data filter by TYPE
-        console.log(res.data)
+
+    if (state.listUrl.length > 0) {
+        const pi = state.pageIndex
+        const pl = state.pageLength
+        const dl = state.dataLength
+
+        const from = (pi - 1) * pl
+        //Make sure the last page is not complete
+        const to = (from + pl - 1) > dl ? dl : from + pl - 1
+
+        const result = []
+
+        for (let i = from; i <= to; i++) {
+            const url = state.exploreBy === '*'
+                ? state.listUrl[i]['url']
+                : state.listTypeUrl[i]['url']
+
+            const res = await axios.get(url)
+            result.push({
+                id: res.data.id,
+                name: res.data.name,
+                types: res.data.types.map(itm => itm.type.name),
+                stats: res.data.stats.map(itm => ({ name: itm.stat.name, value: itm.base_stat })),
+                image: res.data.sprites.other['home']['front_default']
+            })
+        }
+        dispatch(appendListPokeData(result))
     }
-        
+
+
+}
+
+//Get all types of pokemons
+export const loadlistTypeUrlThunk = () => async (dispatch, getState) => {
+    const res = await axios.get("https://pokeapi.co/api/v2/type/")
+    dispatch(appendListTypeUrl(res.data.results))
+}
+
+//Get list of pokemons from generic list or filtered by type
+export const loadListUrlThunk = (index) => async (dispatch, getState) => {
+    const state = getState().pokeData
+
+    if(state.exploreBy === '*'){
+        const res = await axios.get('https://pokeapi.co/api/v2/pokemon?limit=1200')
+        //All data urls
+        dispatch(appendListUrl(res.data.results))
+        dispatch(setDataLength(res.data.count))    
+    } else {
+        const res = await axios.get(`https://pokeapi.co/api/v2/type/${index}/`)
+        //All data urls
+        dispatch(appendListUrl(res.data.pokemon.map(i => i.pokemon)))
+        dispatch(setDataLength(res.data.pokemon.length))
+    }
 }
 
 export const _exploreBy = state => state.pokeData.exploreBy
@@ -79,10 +131,11 @@ export const pLength = state => state.pokeData.pageLength
 
 export const {
     changeExploreBy,
-    clearListUrl, 
-    appendListUrl, 
-    clearListPokeData, 
-    appendListPokeData, 
+    clearListUrl,
+    appendListUrl,
+    appendListTypeUrl,
+    clearListPokeData,
+    appendListPokeData,
     changePageIndex,
     setDataLength,
     setPageLength
