@@ -90,19 +90,19 @@ export const PokemonCard = ({ data }) => {
                             <div className='card__body__grid'>
                                 <div>
                                     <h6 className='subtitle_color'>HP</h6>
-                                    <h3 className={getStyleByKey('color')}>{data.hp}</h3>
+                                    <h3 className={getStyleByKey('color')}>{data.stats.find(i=>i.name==='hp')['value']}</h3>
                                 </div >
                                 <div>
                                     <h6 className='subtitle_color'>ATTACK</h6>
-                                    <h3 className={getStyleByKey('color')}>{data.attack}</h3>
+                                    <h3 className={getStyleByKey('color')}>{data.stats.find(i=>i.name==='attack')['value']}</h3>
                                 </div>
                                 <div>
                                     <h6 className='subtitle_color'>DEFENSE</h6>
-                                    <h3 className={getStyleByKey('color')}>{data.defense}</h3>
+                                    <h3 className={getStyleByKey('color')}>{data.stats.find(i=>i.name==='defense')['value']}</h3>
                                 </div>
                                 <div>
                                     <h6 className='subtitle_color'>SPEED</h6>
-                                    <h3 className={getStyleByKey('color')}>{data.speed}</h3>
+                                    <h3 className={getStyleByKey('color')}>{data.stats.find(i=>i.name==='speed')['value']}</h3>
                                 </div>
                             </div >
                         </div >
@@ -232,7 +232,7 @@ export const Pokedex = () => {
                 defaultPage={1}
                 page={pageIndex ?? 1}
                 color='rojo'
-                count={Math.ceil(dataLength / pageLength) || 1}
+                count={Math.floor(dataLength / pageLength) || 1}
                 shape="rounded" />
         </div>
     );
