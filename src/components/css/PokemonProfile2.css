@@ -21,6 +21,7 @@
 }
 
 .pokemon-profile__container {
+  text-transform: capitalize;
   display: flex;
   flex-flow: column nowrap;
   align-items: center;
@@ -45,7 +46,7 @@
   color: #416460;
   border: solid 1px #416460;
   display: inline-block;
-  width: 5rem;
+  padding: 0 15px 0 15px;
   text-align: center;
   margin-top: 1rem;
 }

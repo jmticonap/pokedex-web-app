@@ -7,6 +7,7 @@ import { ArrowBack } from "@mui/icons-material";
 import { Fab, Skeleton } from "@mui/material";
 import Header from "./Header";
 import Back from "./Back";
+import imgPokeballWire from "../assets/img/pokeball_wire.svg";
 import PokemonProfile2 from "./PokemonProfile2";
 
 const ProgressBars = ({ stat }) => {
@@ -109,18 +110,23 @@ const PokemonProfile = () => {
       ) : (
         <div>
           <Header />
-          <Back />
 
-          <main className="main-profile-container">
-            <div className="card-profile-primary">
-              <div className={`background-poke ${getStyleByKey("background")}`}>
+          <section className="pokemon-profile__container">
+            <Back />
+            <article className="pokemon-profile_main-container box-shadow">
+              <div
+                className={`pokemon-profile__img-container ${getStyleByKey(
+                  "background"
+                )}`}
+              >
+                {/* imagen pokemon */}
                 <img
                   onLoad={imageLoaded}
-                  className="imgProfile"
+                  className="pokemon-profile__img"
                   src={
                     pokemon.sprites?.other["official-artwork"]["front_default"]
                   }
-                  alt={name}
+                  alt={pokemon.name}
                 />
 
                 {isLoading && (
@@ -133,110 +139,91 @@ const PokemonProfile = () => {
                   />
                 )}
               </div>
-
-              <section className="info-profile">
-                <div className="data1-profile">
-                  <h2 className="title2-profile">#{pokemon.id}</h2>
-                  <hr className="hr-absolute" />
-                  <h1 className="title-profile">{pokemon.name}</h1>
-
-                  <div className="data-profile">
-                    <div>
-                      <h4 className="sub-title-profile">Weight</h4>
-                      <p>{pokemon.weight}</p>
-                    </div>
-                    <div>
-                      <h4 className="sub-title-profile">Height</h4>
-                      <p>{pokemon.height}</p>
-                    </div>
-                  </div>
-
-                  <ul className="pokemon-profile__skills1">
+              {/* datos generales */}
+              <h2 className="pokemon-profile__h1_id">#{pokemon.id}</h2>
+              <div className="pokemos-profile__h1-container">
+                <h1 className="pokemon-profile__h1_name">{pokemon.name}</h1>
+              </div>
+              <div className="data-profile">
+                <div>
+                  <h4 className="sub-title-profile">Weight</h4>
+                  <p>{pokemon.weight}</p>
+                </div>
+                <div>
+                  <h4 className="sub-title-profile">Height</h4>
+                  <p>{pokemon.height}</p>
+                </div>
+              </div>
+              {/* tipos y habilidades */}
+              <ul className="pokemon-profile__skills1">
+                <li>
+                  <ul>
                     <li>
-                      <ul>
-                        <li>
-                          <h2>Type</h2>
-                        </li>
-                        <li>
-                          <ul className="tags-grids">
-                            {pokemon.types.map((type) => (
-                              //pendiente poner color segun la clase
-                              <li>
-                                <div
-                                  title="cosa"
-                                  key={type.type.name}
-                                  className={`tags-type ${getStyleByKey(
-                                    "background",
-                                    type.type.name
-                                  )}`}
-                                >
-                                  {type.type.name}
-                                </div>
-                              </li>
-                            ))}
-                          </ul>
-                        </li>
-                      </ul>
+                      <h2>Type</h2>
                     </li>
                     <li>
-                      <ul>
-                        <li>
-                          <h2>Skills</h2>
-                        </li>
-                        <li>
-                          <ul className="tags-grids">
-                            {pokemon.abilities.map((skill) => (
-                              //pendiente poner color segun la clase
-                              <li>
-                                <div key={skill.ability.name}>
-                                  {skill.ability.name}
-                                </div>
-                              </li>
-                            ))}
-                          </ul>
-                        </li>
+                      <ul className="tags-grids">
+                        {pokemon.types.map((type) => (
+                          //pendiente poner color segun la clase
+                          <li key={type.type.name}>
+                            <div
+                              title="cosa"
+                              className={`tags-type ${getStyleByKey(
+                                "background",
+                                type.type.name
+                              )}`}
+                            >
+                              {type.type.name}
+                            </div>
+                          </li>
+                        ))}
                       </ul>
                     </li>
                   </ul>
-
-                  {/* <div className="data2-profile">
-                    <div className="types-profile-container">
-                      <h3 className="title3-profile">Type</h3>
-                      <div className="types-profile">
-                        {pokemon.types.map((type) => (
-                          //pendiente poner color segun la clase
-                          <div key={type.type.name}>{type.type.name}</div>
-                        ))}
-                      </div>
-                    </div>
-
-                    <div className="hability-profile-container">
-                      <h3 className="title3-profile">Skills</h3>
-                      <div className="types-profile">
+                </li>
+                <li>
+                  <ul>
+                    <li>
+                      <h2>Skills</h2>
+                    </li>
+                    <li>
+                      <ul className="tags-grids">
                         {pokemon.abilities.map((skill) => (
                           //pendiente poner color segun la clase
-                          <div key={skill.ability.name}>
-                            {skill.ability.name}
-                          </div>
+                          <li key={skill.ability.name}>
+                            <div>{skill.ability.name}</div>
+                          </li>
                         ))}
-                      </div>
-                    </div>
-                  </div> */}
-                </div>
-              </section>
-
-              <section className="stats-section">
-                <h2>
-                  Stats <hr />
+                      </ul>
+                    </li>
+                  </ul>
+                </li>
+              </ul>
+              {/* titulo stats */}
+              <div className="pokemon-profile__stats-title">
+                <h2 className="pokemon-profile__h1_name pokemon-profile__stats-title__h1">
+                  Stats
                 </h2>
+                <img src={imgPokeballWire} alt="pokeball wire" />
+              </div>
+
+              {/* aqui estan las barras de stats */}
+              <section className="stats-section">
                 <div className="stats-container">
-                  {pokemon.stats.map((stat) => (
-                    <ProgressBars key={stat.stat.name} stat={stat} />
+                  {pokemon.stats.map((stat, index) => (
+                    <ProgressBars key={stat.stat.name + index} stat={stat} />
                   ))}
                 </div>
               </section>
-            </div>
+            </article>
+            {/* seccion movimientos que puede aprender el pokemon */}
             <section className="moves-section-container">
+              <div className="pokemon-profile__stats-title">
+                <h1 className="pokemon-profile__h1_name pokemon-profile__stats-title__h1">
+                  Movements
+                </h1>
+                <img src={imgPokeballWire} alt="pokeball wire" />
+              </div>
               {pokemon.moves.map((move, index) => (
                 <div
                   key={move[0]?.move.name + index.toString()}
@@ -246,7 +233,7 @@ const PokemonProfile = () => {
                 </div>
               ))}
             </section>
-          </main>
+          </section>
         </div>
       )}
     </div>
