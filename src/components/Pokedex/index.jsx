@@ -31,6 +31,7 @@ import {
     loadPokeDataThunk
 } from '../../store/slices/pokeData.slice'
 import { useSelector } from 'react-redux' 
+import { loadNamesThunk } from '../../store/slices/pokemonNames.slice'
 
 
 export const PokemonCardWrapper = (props) => {
@@ -124,6 +125,7 @@ export const Pokedex = () => {
     const pageIndex = useSelector( state => state.pokeData.pageIndex )
     const dataLength = useSelector( state => state.pokeData.dataLength )
     const pageLength = useSelector( state => state.pokeData.pageLength )
+    const pokeAllNames = useSelector( state => state.pokemonNamesSlice )
 
     const [isLoaded, setIsLoaded] = useState(false)
     const [pType, setPType] = useState('*')
@@ -161,7 +163,7 @@ export const Pokedex = () => {
 
     useEffect(()=>{
         dispatch(loadlistTypeUrlThunk())
-        
+        dispatch(loadNamesThunk())
     },[])
     useEffect(()=>{
         dispatch(loadListUrlThunk(pType))
@@ -196,7 +198,7 @@ export const Pokedex = () => {
                             onChange={navigateToProfileByName}
                             disablePortal={true}
                             id="combo-box-demo"
-                            options={['Ada','Segundo','Mia','Donovan']}
+                            options={pokeAllNames}
                             sx={{ width: 300, borderRadius: 0 }}
                             renderInput={(params) => <TextField {...params} label="name" />}
                         />
