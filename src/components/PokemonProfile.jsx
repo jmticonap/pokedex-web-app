@@ -11,41 +11,42 @@ import imgPokeballWire from "../assets/img/pokeball_wire.svg";
 import PokemonProfile2 from "./PokemonProfile2";
 
 const ProgressBars = ({ stat }) => {
-    const [beforeAnimation, setBeforeAnimation] = useState(0);
+  const [beforeAnimation, setBeforeAnimation] = useState(0);
 
-    useEffect(() => {
-        setTimeout(() => {
-            //setBeforeAnimation((stat?.base_state * 100) / 250);
-            const realValue = (stat.base_stat * 100) / 250;
+  useEffect(() => {
+    setTimeout(() => {
+      //setBeforeAnimation((stat?.base_state * 100) / 250);
+      const realValue = (stat.base_stat * 100) / 250;
 
-            setBeforeAnimation(realValue);
-        }, 500);
-    }, []);
+      setBeforeAnimation(realValue);
+    }, 500);
+  }, []);
 
-    const calculateWidthByStat = () => {
-        const total = (beforeAnimation * 100) / 250;
-        return total + "%";
-    };
+  const calculateWidthByStat = () => {
+    const total = (beforeAnimation * 100) / 250;
+    return total + "%";
+  };
 
-    return (
-        <div className="stat-container">
-            <div className="properties-stats-container">
-                <h3>{stat.stat.name}</h3>
-                <h3>{stat.base_stat}/250</h3>
-            </div>
-            <div className="posible-bar-stat">
-                <div
-                    className="bar-stat bar-animation "
-                    style={{
-                        width: `${beforeAnimation}%`,
-                    }}
-                ></div>
-            </div>
-        </div>
-    );
+  return (
+    <div className="stat-container">
+      <div className="properties-stats-container">
+        <h3>{stat.stat.name}</h3>
+        <h3>{stat.base_stat}/250</h3>
+      </div>
+      <div className="posible-bar-stat">
+        <div
+          className="bar-stat bar-animation "
+          style={{
+            width: `${beforeAnimation}%`,
+          }}
+        ></div>
+      </div>
+    </div>
+  );
 };
 
 const PokemonProfile = () => {
+
     const name = useParams("name").name;
     const [pokemon, setPokemon] = useState({});
     const navigate = useNavigate();
@@ -70,16 +71,6 @@ const PokemonProfile = () => {
                 });
         }
     }, []);
-    useEffect(() => {
-        // var pokeImg = new Image
-        // pokeImg.src = pokemon.sprites?.other["official-artwork"]["front_default"]
-        // pokeImg.onload = function () {
-        //     setTimeout(() => {
-        //         setImgLoaded(true)
-        //     }, 250);
-        //     //imgContainer.innerHTML = "<img src='images/test.png'>";
-        // };
-    }, [pokemon]);
 
     const getStyleByKey = (key, type) => {
         if (pokemon) {
@@ -98,17 +89,50 @@ const PokemonProfile = () => {
     };
 
     return (
+
         <div>
-            {isChargin ? (
-                <div className="loader-container">
-                    <img
-                        src="https://img1.picmix.com/output/stamp/normal/0/9/0/4/1604090_a14a5.gif"
-                        className="chargin-gi"
-                        alt={name + "Picture"}
-                    />
-                </div>
-            ) : (
+          <Header />
+
+          <section className="pokemon-profile__container">
+            <Back />
+            <article className="pokemon-profile_main-container box-shadow">
+              <div
+                className={`pokemon-profile__img-container ${getStyleByKey(
+                  "background"
+                )}`}
+              >
+                {/* imagen pokemon */}
+                <img
+                  onLoad={imageLoaded}
+                  className="pokemon-profile__img"
+                  src={
+                    pokemon.sprites?.other["official-artwork"]["front_default"]
+                  }
+                  alt={pokemon.name}
+                />
+
+                {isLoading && (
+                  <Skeleton
+                    className="imgProfile"
+                    variant="circular"
+                    width={440}
+                    height={440}
+                    sx={{ bgcolor: "grey.400" }}
+                  />
+                )}
+              </div>
+              {/* datos generales */}
+              <h2 className="pokemon-profile__h1_id">#{pokemon.id}</h2>
+              <div className="pokemos-profile__h1-container">
+                <h1 className="pokemon-profile__h1_name">{pokemon.name}</h1>
+              </div>
+              <div className="data-profile">
                 <div>
+                  <h4 className="sub-title-profile">Weight</h4>
+                  <p>{pokemon.weight}</p>
+                </div>
+                <div>
+
                     <Header />
 
                     <section className="pokemon-profile__container">
@@ -235,9 +259,13 @@ const PokemonProfile = () => {
                         </section>
                     </section>
                 </div>
-            )}
+              ))}
+            </section>
+          </section>
         </div>
-    );
+      )}
+    </div>
+  );
 };
 
 export default PokemonProfile;

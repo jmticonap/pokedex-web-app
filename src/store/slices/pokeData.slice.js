@@ -1,22 +1,26 @@
 import { createSlice } from "@reduxjs/toolkit";
-import axios from 'axios'
+import axios from "axios";
 
-const _clearList = list => {
-    while (list.length > 0) {
-        list.pop()
-    }
-}
+const _clearList = (list) => {
+  while (list.length > 0) {
+    list.pop();
+  }
+};
 
 const pokeData = createSlice({
-    name: 'poke_data',
-    initialState: {
-        exploreBy: '*',
-        listUrl: [],
-        listTypeUrl: [],
-        listPokeData: [],
-        pageIndex: 0,
-        dataLength: 0,
-        pageLength: 10
+  name: "poke_data",
+  initialState: {
+    exploreBy: "*",
+    listUrl: [],
+    listTypeUrl: [],
+    listPokeData: [],
+    pageIndex: 0,
+    dataLength: 0,
+    pageLength: 10,
+  },
+  reducers: {
+    changeExploreBy: (state, action) => {
+      if (action.payload) state.exploreBy = action.payload;
     },
     reducers: {
         changeExploreBy: (state, action) => {
@@ -69,20 +73,19 @@ export const loadPokeDataThunk = () => async (dispatch, getState) => {
     const state = getState().pokeData
     
     const result = []
-    if (state.listUrl.length > 0) {
-        const pi = state.pageIndex
-        const pl = state.pageLength
-        const dl = state.dataLength
+  if (state.listUrl.length > 0) {
+    const pi = state.pageIndex;
+    const pl = state.pageLength;
+    const dl = state.dataLength;
 
-        const from = (pi - 1) * pl
-        //Make sure the last page is not complete
-        const to = (from + pl - 1) > dl ? dl : from + pl - 1
+    const from = (pi - 1) * pl;
+    //Make sure the last page is not complete
+    const to = from + pl - 1 > dl ? dl : from + pl - 1;
 
-        
+    const result = [];
 
-        for (let i = from; i <= to; i++) {
-            const res = await axios.get(state.listUrl[i]['url'])
-
+    for (let i = from; i <= to; i++) {
+      const res = await axios.get(state.listUrl[i]["url"]);
             result.push({
                 id: res.data.id,
                 name: res.data.name,
@@ -94,50 +97,49 @@ export const loadPokeDataThunk = () => async (dispatch, getState) => {
         
     }
     dispatch(appendListPokeData(result))
-
-
-}
+  }
+};
 
 //Get all types of pokemons
 export const loadlistTypeUrlThunk = () => async (dispatch, getState) => {
-    const res = await axios.get("https://pokeapi.co/api/v2/type/")
-    dispatch(appendListTypeUrl(res.data.results))
-}
+  const res = await axios.get("https://pokeapi.co/api/v2/type/");
+  dispatch(appendListTypeUrl(res.data.results));
+};
 
 //Get list of pokemons from generic list or filtered by type
 export const loadListUrlThunk = (url) => async (dispatch, getState) => {
-    const state = getState().pokeData
+  const state = getState().pokeData;
 
-    if(state.exploreBy === '*'){
-        const res = await axios.get('https://pokeapi.co/api/v2/pokemon?limit=1200')
-        //All data urls
-        dispatch(appendListUrl(res.data.results))
-        dispatch(setDataLength(res.data.count))    
-    } else {
-        const res = await axios.get(url)
-        //All data urls
-        dispatch(appendListUrl(res.data.pokemon.map(i => i.pokemon)))
-        dispatch(setDataLength(res.data.pokemon.length))
-    }
-}
+  if (state.exploreBy === "*") {
+    const res = await axios.get("https://pokeapi.co/api/v2/pokemon?limit=1200");
+    //All data urls
+    dispatch(appendListUrl(res.data.results));
+    dispatch(setDataLength(res.data.count));
+  } else {
+    const res = await axios.get(url);
+    //All data urls
+    dispatch(appendListUrl(res.data.pokemon.map((i) => i.pokemon)));
+    dispatch(setDataLength(res.data.pokemon.length));
+  }
+};
 
-export const _exploreBy = state => state.pokeData.exploreBy
-export const lstUrl = state => state.pokeData.listUrl
-export const lstPokeData = state => state.pokeData.listPokeData
-export const pIndex = state => state.pokeData.pageIndex
-export const dLength = state => state.pokeData.dataLength
-export const pLength = state => state.pokeData.pageLength
+export const _exploreBy = (state) => state.pokeData.exploreBy;
+export const lstUrl = (state) => state.pokeData.listUrl;
+export const lstPokeData = (state) => state.pokeData.listPokeData;
+export const pIndex = (state) => state.pokeData.pageIndex;
+export const dLength = (state) => state.pokeData.dataLength;
+export const pLength = (state) => state.pokeData.pageLength;
 
 export const {
-    changeExploreBy,
-    clearListUrl,
-    appendListUrl,
-    appendListTypeUrl,
-    clearListPokeData,
-    appendListPokeData,
-    changePageIndex,
-    setDataLength,
-    setPageLength
-} = pokeData.actions
+  changeExploreBy,
+  clearListUrl,
+  appendListUrl,
+  appendListTypeUrl,
+  clearListPokeData,
+  appendListPokeData,
+  changePageIndex,
+  setDataLength,
+  setPageLength,
+} = pokeData.actions;
 
-export default pokeData.reducer
+export default pokeData.reducer;
