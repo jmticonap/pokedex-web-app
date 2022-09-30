@@ -7,8 +7,6 @@ import { useParams } from 'react-router-dom';
 import Header from "./Header";
 import Back from "./Back";
 
-import db from '../assets/db/pokemones.json'
-
 
 const ProgressBars = ({ stat }) => {
     const [beforeAnimation, setBeforeAnimation] = useState(0);

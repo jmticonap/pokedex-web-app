@@ -8,7 +8,7 @@ const store = configureStore({
     reducer: {
         userName,
         pokeData,
-        pokemonNamesSlice,
+        pokemonNamesSlice
     }
 })
 

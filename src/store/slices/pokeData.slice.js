@@ -22,54 +22,57 @@ const pokeData = createSlice({
     changeExploreBy: (state, action) => {
       if (action.payload) state.exploreBy = action.payload;
     },
-    clearListUrl: (state) => {
-      _clearList(state.listUrl);
-      console.log(state.listUrl);
-    },
-    appendListUrl: (state, action) => {
-      if (action.payload && action.payload.__proto__ === [].__proto__)
-        //Verifying if action.payload have an array
-        return {
-          ...state,
-          listUrl: action.payload,
-        };
-    },
-    appendListTypeUrl: (state, action) => {
-      if (action.payload && action.payload.__proto__ === [].__proto__)
-        //Verifying if action.payload have an array
-        return {
-          ...state,
-          listTypeUrl: action.payload,
-        };
-    },
-    clearListPokeData: (state) => {
-      _clearList(state.listPokeData);
-    },
-    appendListPokeData: (state, action) => {
-      console.log(state.exploreBy);
-      if (action.payload) {
-        return {
-          ...state,
-          listPokeData: [...action.payload].sort((a, b) => a.id - b.id),
-        };
-      }
-    },
-    changePageIndex: (state, action) => {
-      state.pageIndex = action.payload;
-    },
-    setDataLength: (state, action) => {
-      state.dataLength = action.payload;
-    },
-    setPageLength: (state, action) => {
-      state.pageLength = action.payload;
-    },
-  },
-});
+    reducers: {
+        changeExploreBy: (state, action) => {
+            if (action.payload)
+                state.exploreBy = action.payload
+        },
+        clearListUrl: state => {
+            _clearList(state.listUrl)
+            console.log(state.listUrl)
+        },
+        appendListUrl: (state, action) => {
+            if (action.payload && action.payload.__proto__ === ([]).__proto__)
+                //Verifying if action.payload have an array
+                return {
+                    ...state, listUrl: action.payload
+                }
+        },
+        appendListTypeUrl: (state, action) => {
+            if (action.payload && action.payload.__proto__ === ([]).__proto__)
+                //Verifying if action.payload have an array
+                return {
+                    ...state, listTypeUrl: action.payload
+                }
+        },
+        clearListPokeData: state => {
+            _clearList(state.listPokeData)
+        },
+        appendListPokeData: (state, action) => {
+            if (action.payload) {
+                return {
+                    ...state,
+                    listPokeData: [...action.payload].sort((a, b) => a.id - b.id)
+                }
+            }
+        },
+        changePageIndex: (state, action) => {
+            state.pageIndex = action.payload
+        },
+        setDataLength: (state, action) => {
+            state.dataLength = action.payload
+        },
+        setPageLength: (state, action) => {
+            state.pageLength = action.payload
+        }
+    }
+})
 
 //Get data of pokemos by page
 export const loadPokeDataThunk = () => async (dispatch, getState) => {
-  const state = getState().pokeData;
-
+    const state = getState().pokeData
+    
+    const result = []
   if (state.listUrl.length > 0) {
     const pi = state.pageIndex;
     const pl = state.pageLength;
@@ -83,20 +86,17 @@ export const loadPokeDataThunk = () => async (dispatch, getState) => {
 
     for (let i = from; i <= to; i++) {
       const res = await axios.get(state.listUrl[i]["url"]);
-
-      result.push({
-        id: res.data.id,
-        name: res.data.name,
-        types: res.data.types.map((itm) => itm.type.name),
-        stats: res.data.stats.map((itm) => ({
-          name: itm.stat.name,
-          value: itm.base_stat,
-        })),
-        image: res.data.sprites.other["official-artwork"]["front_default"],
-      });
+            result.push({
+                id: res.data.id,
+                name: res.data.name,
+                types: res.data.types.map(itm => itm.type.name),
+                stats: res.data.stats.map(itm => ({ name: itm.stat.name, value: itm.base_stat })),
+                image: res.data.sprites.other['official-artwork']['front_default']
+            })
+        }
+        
     }
-
-    dispatch(appendListPokeData(result));
+    dispatch(appendListPokeData(result))
   }
 };
 
